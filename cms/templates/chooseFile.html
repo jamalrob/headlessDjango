@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<main>
+    <section class="panel">
+        <h1>Choose a file to edit</h1>
+        <ul style="width:100%;">
+            {% for f in files %}
+            <li>
+                <a href="edit/{{ f }}/">{{ f }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    
+</main>
+{% endblock %}

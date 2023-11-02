@@ -59,6 +59,10 @@ button {
     font-size: 16px;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 button.publish {
     position: absolute;
     right: 31px;
@@ -109,4 +113,17 @@ section.styledContent img {
 
 img[title="imgSmall"] {
     width: 80%;
+}
+
+section.panel {
+    width: 40%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+section.panel h1 {
+    font-size: 2rem;
+    font-weight: bold;
 }
