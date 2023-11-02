@@ -47,6 +47,7 @@ main {
     background: #e6e5e3;
     padding: 15px 25px;
     display: none;
+    box-shadow: 2px 0px 3px #c3c1c0;
 }
 
 button {
@@ -92,11 +93,15 @@ input, textarea {
     font-size: 18px;    
 }
 
-input {
+input[type='text'] {
     margin: 5px 0;
     display: block;
     padding: 8px;
     width: 100%;
+}
+
+input[type="checkbox"] {
+    margin-top: 15px;
 }
 
 textarea {
