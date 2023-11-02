@@ -104,6 +104,7 @@ def edit(request, slug):
             "slug": slug,
             "imageClass": imageClass,
             "md_content": data.content,
+            "imagekit_bucket": settings.IMG_BUCKET,
             "html": html
         }
         return HttpResponse(template.render(context, request))

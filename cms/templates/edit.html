@@ -118,7 +118,7 @@
         $('#editBox').on('keyup', function(){
             var converter = new showdown.Converter(),
             text      = $(this).val(),
-            html      = converter.makeHtml(text);
+            html      = converter.makeHtml(text.replaceAll('/bucket/', '{{ imagekit_bucket }}/'));
             $(".styledContent").html(html);
         })
 
