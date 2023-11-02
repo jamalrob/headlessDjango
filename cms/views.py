@@ -8,6 +8,8 @@ from github import Github, Auth
 from django.conf import settings
 import markdown
 import frontmatter
+from django.shortcuts import redirect
+
 
 bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
 
@@ -62,31 +64,34 @@ def save(request):
     else:
         return HttpResponseBadRequest('Invalid request')
 
+
 def index(request):
 
-    slug = 'the-argument-for-indirect-realism'
-    repo = getRepo();
-    filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'    
-    file_content = repo.get_contents(filePath)
-    txt = file_content.decoded_content.decode()
-    data = frontmatter.loads(txt)
-    md = markdown.Markdown()
-    html = md.convert(data.content.replace('/bucket', bucket_url))
+    if request.user.is_authenticated:
+        slug = 'the-argument-for-indirect-realism'
+        repo = getRepo();
+        filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'    
+        file_content = repo.get_contents(filePath)
+        txt = file_content.decoded_content.decode()
+        data = frontmatter.loads(txt)
+        md = markdown.Markdown()
+        html = md.convert(data.content.replace('/bucket', bucket_url))
 
-    # NOTE: tags as an array:
-    # [t.strip() for t in data['tags'].split(',')]
+        # NOTE: tags as an array:
+        # [t.strip() for t in data['tags'].split(',')]
 
-    # Use a sanitizer like bleach here
-    
-    template = loader.get_template("index.html")
-    context = {
-        "title": data["title"],
-        "date": data["date"],
-        "tags": data['tags'],
-        "md_content": data.content,
-        "html": html
-    }
-    return HttpResponse(template.render(context, request))
+        # Use a sanitizer like bleach here
+        
+        template = loader.get_template("index.html")
+        context = {
+            "title": data["title"],
+            "date": data["date"],
+            "tags": data['tags'],
+            "md_content": data.content,
+            "html": html
+        }
+        return HttpResponse(template.render(context, request))
+    return redirect("/admin/login/?next=/cms/")
 
 
 def login(request):
