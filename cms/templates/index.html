@@ -1,0 +1,179 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'cms/styles/global.css' %}">
+        <meta name="description" content="">
+
+        <meta property="og:title" content="">
+        <meta property="og:type" content="">
+        <meta property="og:url" content="">
+        <meta property="og:image" content="">
+
+        <link rel="icon" href="/favicon.ico" sizes="any">
+        <link rel="icon" href="/icon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="icon.png">
+
+        <script src="{% static 'cms/scripts/htmx.min.js' %}"></script>
+        <script src="{% static 'cms/scripts/jquery.min.js' %}"></script>
+    </head>
+    <body>
+        <div id="sidebar">
+
+            <a href="#" id="closeSidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="left-arrow" class="small icon"><g data-name="Layer 2"><g data-name="arrowhead-left" fill="#134563"><path d="M11.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L7.29 12l4.48-5.37a1 1 0 0 0-.13-1.4z"></path><path d="m14.29 12 4.48-5.37a1 1 0 0 0-1.54-1.28l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63z"></path></g></g></svg>
+            </a>
+
+            <input type="text" id="txtTitle" placeholder="Title" value="{{ title }}">
+            <input type="text" id="txtDate" placeholder="Date" value="{{ date }}">
+            <input type="text" id="txtTags" placeholder="Date" value="{{ tags }}">            
+            <button class="publish" id="publish">
+                Publish post
+            </button>                
+        </div>
+        <main>
+            <section class="edit col">
+                <div class="form">
+                    <a href="#" id="hamburger">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="icon small"><g fill="#134563"><path d="M8.2 13h47.5v6.3H8.2zM8.2 28.8h47.5v6.4H8.2zM8.2 44.7h47.5V51H8.2z"></path></g></svg>
+                    </a>
+                    <!--<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="hamburger"><g fill="#134563"><path d="M8.2 13h47.5v6.3H8.2zM8.2 28.8h47.5v6.4H8.2zM8.2 44.7h47.5V51H8.2z"></path></g></svg>-->
+                    <textarea id="editBox">{% autoescape off %}{{ md_content }}{% endautoescape %}</textarea>
+                </div>
+            </section>
+            <section class="styledContent col">
+                {% autoescape off %}{{ html }}{% endautoescape %}
+                <!--<h2>Tags</h2>
+                <ul>
+                {% for tag in tags %}
+                    <li>{{ tag }}</li>
+                {% endfor %}
+                </ul>-->
+            </section>
+        </main>
+        <script>
+           
+            //window.onload = alert(editBox.value);
+
+            $(document).ready(function() {
+
+                // Inputs
+                //const editBox = document.getElementById('editBox');
+                //const txtTitle = document.getElementById('txtTitle');
+                //const txtDate= document.getElementById('txtDate');
+                //const txtTags= document.getElementById('txtTags');
+
+                // Anchors/buttons
+                const hamburger = document.getElementById('hamburger');
+                const closeSidebar = document.getElementById('closeSidebar');
+                const publish = document.getElementById('publish');            
+
+                $('#publish').click(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var url = "/cms/save/"
+                    var data = {
+                        content: $("#editBox").val(),
+                        title: $("#txtTitle").val(),
+                        date: $("#txtDate").val(),
+                        tags: $("#txtTags").val(),
+                        csrfmiddlewaretoken: getCookie('csrftoken'),
+                    }
+            
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: data,
+                    }).done(function(response) {
+                          console.log(response) // let's just print the data in the console for now
+                    })
+                    $(this).trigger('reset') // reset the form
+                })
+
+                $('#editBox').change(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert("input");
+                })
+
+                $('#hamburger').click(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $("#sidebar").show()
+                    //const sidebar = document.getElementById("sidebar");
+                    //sidebar.style.display = 'block';                    
+                })
+
+                $('#closeSidebar').click(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $("#sidebar").hide()
+                })
+
+
+
+
+            })
+
+            //editBox.addEventListener('input', function handleChange(event) {
+            //    newMd = event.target.value;
+            //});
+            /*
+            hamburger.addEventListener('click', function handleChange(event) {
+                event.stopPropagation();
+                event.preventDefault();
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.display = 'block';
+            });
+
+            closeSidebar.addEventListener('click', function handleChange(event) {
+                event.stopPropagation();
+                event.preventDefault();
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.display = 'none';
+            });
+            */
+
+            // Utility for CSRF token
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+
+            /*
+
+            publish.addEventListener('click', function handleChange(event) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                const csrftoken = getCookie('csrftoken');
+
+                const xhttp = new XMLHttpRequest();
+                //xhttp.setRequestHeader('X-CSRFToken', csrftoken);
+                xhttp.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhttp.open("POST", "/cms/save/", true); 
+                const postData = {
+                    content: editBox.value
+                };
+                xhttp.send(JSON.stringify(postData));
+            });
+            */            
+            
+        </script>    
+    </body>
+</html>

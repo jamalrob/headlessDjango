@@ -1,0 +1,112 @@
+html,
+body {
+    background: #fffdf8;
+    color: #323232;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,'avenir next',avenir,'helvetica neue',helvetica,ubuntu,roboto,noto,'segoe ui',arial,sans-serif;
+    line-height: 1.62;
+    font-size: 19px;
+}
+
+* {
+    box-sizing: border-box;
+}
+  
+a {
+    color: #0070f3;
+    text-decoration: none;
+}
+  
+a:hover {
+    text-decoration: underline;
+}
+
+main {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px 20px;
+    width: 50%;
+}
+
+#sidebar {
+    position: fixed;
+    width: 50%;
+    height: 100vh;
+    z-index: 1000;
+    /*background: #F1F1F1;*/
+    background: #e6e5e3;
+    padding: 15px 25px;
+    display: none;
+}
+
+button {
+    background-color:#134563;
+    color: #fff;
+    border: none; 
+    border-radius: 3px; 
+    padding: 12px 25px;
+    min-height: 30px; 
+    font-size: 16px;
+}
+
+button.publish {
+    position: absolute;
+    right: 31px;
+    background-color: #18897e;    
+    bottom: 40px;
+    margin-top: 15px;
+}
+
+button.publish:hover {
+    background-color: #15b4a4;    
+}
+
+.form {
+    position: fixed;
+    left: 20px;
+    top: 12px;
+    width: 48%;    
+}
+
+svg.icon.small {
+    width: 1.4rem;
+}
+
+input, textarea {
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    font-size: 18px;    
+}
+
+input {
+    margin: 5px 0;
+    display: block;
+    padding: 8px;
+    width: 100%;
+}
+
+textarea {
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    width: 100%;
+    height: 90vh;
+}
+
+section.styledContent img {
+    max-width: 100%;
+}
+
+img[title="imgSmall"] {
+    width: 80%;
+}
