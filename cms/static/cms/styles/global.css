@@ -87,6 +87,10 @@ svg.icon.small {
     width: 1.4rem;
 }
 
+form.frmFrontmatter {
+    margin-top: 10px;
+}
+
 input, textarea {
     border-radius: 5px;
     border: 2px solid #ccc;
@@ -94,10 +98,16 @@ input, textarea {
 }
 
 input[type='text'] {
-    margin: 5px 0;
     display: block;
     padding: 8px;
     width: 100%;
+    margin: 0 0 5px 0
+}
+
+label.text {
+    margin: 5px 0;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 input[type="checkbox"] {

@@ -45,6 +45,8 @@ def save(request):
                 title = request.POST.get('title', None)
                 date = request.POST.get('date', None)
                 tags = request.POST.get('tags', None)
+                image = request.POST.get('image', None)
+                imageClass = request.POST.get('imageClass', None)
                 content = request.POST.get('content', None)
 
                 slug = 'the-argument-for-indirect-realism'
@@ -57,6 +59,8 @@ def save(request):
                     f"\ntitle: '{title}'"
                     f"\ndate: '{date}'"
                     f"\ntags: {tags}"
+                    f"\nimage: {image}"
+                    f"\nimageClass: {imageClass}"
                     "\n---\n"
                 )
 
@@ -89,14 +93,22 @@ def edit(request, slug):
         # [t.strip() for t in data['tags'].split(',')]
 
         # Use a sanitizer like bleach here
+
+        title = data.get("title") or ''
+        date = data.get("date") or ''
+        tags = data.get("tags") or ''
+        image = data.get("image") or ''
+        imageClass = data.get("imageClass") or ''
         
         template = loader.get_template("edit.html")
         context = {
-            "title": data["title"],
-            "date": data["date"],
-            "tags": data['tags'],
+            "title": title,
+            "date": date,
+            "tags": tags,
+            "image": image,
+            "imageClass": imageClass,
             "md_content": data.content,
             "html": html
         }
         return HttpResponse(template.render(context, request))
-    return redirect("/admin/login/?next=/choosefile/")
+    return redirect("/admin/login/?next=/")
