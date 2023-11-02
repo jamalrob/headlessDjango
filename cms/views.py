@@ -36,7 +36,7 @@ def index(request):
         return HttpResponse(template.render(context, request))
     return redirect("/admin/login/?next=/cms/")
 
-def save(request):
+def save(request, slug):
     if request.user.is_authenticated:
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
@@ -48,8 +48,6 @@ def save(request):
                 image = request.POST.get('image', None)
                 imageClass = request.POST.get('imageClass', None)
                 content = request.POST.get('content', None)
-
-                slug = 'the-argument-for-indirect-realism'
 
                 # fm, content = frontmatter.parse(
 
@@ -64,11 +62,11 @@ def save(request):
                     "\n---\n"
                 )
 
-                # fm, content = frontmatter.parse(fmString)
-                #print(fm)
-                #print(content)
+                print(fmString)
 
-                ud = updateMarkdownFile(slug, fmString, content)
+
+                # fm, content = frontmatter.parse(fmString)
+                #ud = updateMarkdownFile(slug, fmString, content)
                 return JsonResponse({'status': 'ok'}, status=200)
 
 
@@ -106,6 +104,7 @@ def edit(request, slug):
             "date": date,
             "tags": tags,
             "image": image,
+            "slug": slug,
             "imageClass": imageClass,
             "md_content": data.content,
             "html": html
