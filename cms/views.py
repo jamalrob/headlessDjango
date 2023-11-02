@@ -20,9 +20,9 @@ def topindex(request):
 
 def index(request):
     if request.user.is_authenticated:
-        slug = 'the-argument-for-indirect-realism'
-        repo = getRepo();
-        filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'    
+        #slug = 'the-argument-for-indirect-realism'
+        #repo = getRepo();
+        #filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'    
         # [t.strip() for t in data['tags'].split(',')]
 
         # Use a sanitizer like bleach here
@@ -62,11 +62,8 @@ def save(request, slug):
                     "\n---\n"
                 )
 
-                print(fmString)
-
-
                 # fm, content = frontmatter.parse(fmString)
-                #ud = updateMarkdownFile(slug, fmString, content)
+                ud = updateMarkdownFile(slug, fmString, content)
                 return JsonResponse({'status': 'ok'}, status=200)
 
 

@@ -58,6 +58,7 @@ button {
     padding: 12px 25px;
     min-height: 30px; 
     font-size: 16px;
+    font-weight: bold;
 }
 
 button:hover {
@@ -70,6 +71,8 @@ button.publish {
     background-color: #18897e;    
     bottom: 40px;
     margin-top: 15px;
+    width: 240px;
+    height: 60px;
 }
 
 button.publish:hover {
@@ -141,4 +144,27 @@ section.panel {
 section.panel h1 {
     font-size: 2rem;
     font-weight: bold;
+}
+
+#loading {
+    display: none;
+    width: 25px;
+    height: 25px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    margin: auto
+}
+  
+@keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+
+#publishedNotice {
+    display: none;
 }

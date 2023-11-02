@@ -28,7 +28,9 @@
         <input type="checkbox" id="image" name="image" checked />
         <label for="image">For the main image, use image on ImageKit named after the slug</label>
         <button class="publish" id="publish">
-            Publish post
+            <span id="action">Publish post</span>
+            <span id="publishedNotice">PUBLISHED</span>
+            <div id="loading"></div>
         </button>
     </form>
 </div>
@@ -77,6 +79,9 @@
             e.preventDefault();
             e.stopPropagation();
 
+            $("#action").hide();
+            $("#loading").show();
+
             const image = $("#image").is(":checked");
 
             var url = '/cms/{{ slug }}/save/';
@@ -96,13 +101,25 @@
                 data: data,
             }).done(function (response) {
                 console.log(response) // let's just print the data in the console for now
+                $("#loading").hide();          
+                $("#publishedNotice").show().delay(3000).fadeOut(function(){
+                    $("#action").show();                    
+                });
             })
-            $(this).trigger('reset') // reset the form
+            //$(this).trigger('reset') // reset the form
         })
 
-        $('#editBox').change(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        //$('#editBox').change(function (e) {
+        //    e.preventDefault();
+        //    e.stopPropagation();
+        //    $(".styledContent").html(e.target.value);
+        //})
+
+        $('#editBox').on('keyup', function(){
+            var converter = new showdown.Converter(),
+            text      = $(this).val(),
+            html      = converter.makeHtml(text);
+            $(".styledContent").html(html);
         })
 
         $('#hamburger').click(function (e) {
