@@ -2,8 +2,11 @@
 {% block body %}
 <main>
     <section class="panel">
-        <h1>Choose a file to edit</h1>
-        <ul style="width:100%;">
+        <h1>Files</h1>
+        <p>
+            <h3><a href="new/">Create new</a></h3>
+        </p>
+        <ul class="listFiles"">
             {% for f in files %}
             <li>
                 <a href="edit/{{ f }}/">{{ f }}</a>

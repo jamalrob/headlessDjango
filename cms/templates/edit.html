@@ -2,7 +2,11 @@
 {% block body %}
 <div id="sidebar">
 
-    <a href="#" id="closeSidebar">
+    <a href="{{ host }}cms/" id="homeSidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="home">
+            <path fill="none" stroke="#134563" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.65721519,18.7714023 L6.65721519,15.70467 C6.65719744,14.9246392 7.29311743,14.2908272 8.08101266,14.2855921 L10.9670886,14.2855921 C11.7587434,14.2855921 12.4005063,14.9209349 12.4005063,15.70467 L12.4005063,15.70467 L12.4005063,18.7809263 C12.4003226,19.4432001 12.9342557,19.984478 13.603038,20 L15.5270886,20 C17.4451246,20 19,18.4606794 19,16.5618312 L19,16.5618312 L19,7.8378351 C18.9897577,7.09082692 18.6354747,6.38934919 18.0379747,5.93303245 L11.4577215,0.685301154 C10.3049347,-0.228433718 8.66620456,-0.228433718 7.51341772,0.685301154 L0.962025316,5.94255646 C0.362258604,6.39702249 0.00738668938,7.09966612 0,7.84735911 L0,16.5618312 C0,18.4606794 1.55487539,20 3.47291139,20 L5.39696203,20 C6.08235439,20 6.63797468,19.4499381 6.63797468,18.7714023 L6.63797468,18.7714023" transform="translate(2.5 2)"></path></svg>
+    </a>    
+    <a href="" id="closeSidebar">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="left-arrow" class="small icon">
             <g data-name="Layer 2">
                 <g data-name="arrowhead-left" fill="#134563">
@@ -17,15 +21,15 @@
         </svg>
     </a>
     <form class="frmFrontmatter">
-        <label class="text">Title</label>
         <input type="text" id="txtTitle" placeholder="Title" value="{{ title }}">
-        <label class="text">Date published</label>
         <input type="text" id="txtDate" placeholder="Date" value="{{ date }}">
-        <label class="text">Tags</label>
         <input type="text" id="txtTags" placeholder="Tags" value="{{ tags }}">
-        <label class="text">CSS class for main image</label>
         <input type="text" id="txtImageClass" placeholder="CSS class for main image" value="{{ imageClass }}">
-        <input type="checkbox" id="image" name="image" checked />
+        {% if image == 'true' %}
+            <input type="checkbox" id="image" name="image" checked />
+        {% else %}
+            <input type="checkbox" id="image" name="image" />
+        {% endif %}
         <label for="image">For the main image, use image on ImageKit named after the slug</label>
         <button class="publish" id="publish">
             <span id="action">Publish post</span>
@@ -44,36 +48,18 @@
                     </g>
                 </svg>
             </a>
-            <!--<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="hamburger"><g fill="#134563"><path d="M8.2 13h47.5v6.3H8.2zM8.2 28.8h47.5v6.4H8.2zM8.2 44.7h47.5V51H8.2z"></path></g></svg>-->
             <textarea id="editBox">{% autoescape off %}{{ md_content }}{% endautoescape %}</textarea>
         </div>
     </section>
     <section class="styledContent col">
         {% autoescape off %}{{ html }}{% endautoescape %}
-        <!--<h2>Tags</h2>
-            <ul>
-            {% for tag in tags %}
-                <li>{{ tag }}</li>
-            {% endfor %}
-            </ul>-->
     </section>
 </main>
 <script>
 
-    //window.onload = alert(editBox.value);
-
     $(document).ready(function () {
 
-        // Inputs
-        //const editBox = document.getElementById('editBox');
-        //const txtTitle = document.getElementById('txtTitle');
-        //const txtDate= document.getElementById('txtDate');
-        //const txtTags= document.getElementById('txtTags');
-
-        // Anchors/buttons
-        const hamburger = document.getElementById('hamburger');
-        const closeSidebar = document.getElementById('closeSidebar');
-        const publish = document.getElementById('publish');
+        let slug = '{{ slug }}';
 
         $('#publish').click(function (e) {
             e.preventDefault();
@@ -82,16 +68,14 @@
             $("#action").hide();
             $("#loading").show();
 
-            const image = $("#image").is(":checked");
-
-            var url = '/cms/{{ slug }}/save/';
+            const url = (slug === '' ? '/cms/new/create/' : `/cms/${ slug }/save/`);
             var data = {
                 content: $("#editBox").val(),
                 title: $("#txtTitle").val(),
                 date: $("#txtDate").val(),
                 tags: $("#txtTags").val(),
                 imageClass: $("#txtImageClass").val(),
-                image: image,
+                image: $("#image").is(":checked"),
                 csrfmiddlewaretoken: getCookie('csrftoken'),
             }
 
@@ -100,20 +84,14 @@
                 type: 'POST',
                 data: data,
             }).done(function (response) {
-                console.log(response) // let's just print the data in the console for now
                 $("#loading").hide();          
-                $("#publishedNotice").show().delay(3000).fadeOut(function(){
-                    $("#action").show();                    
+                $("#publishedNotice").show().delay(2000).fadeOut(function(){
+                    if(response.status==='created'){
+                        window.location.href = `${response.host}cms/edit/${response.slug}/`;
+                    }
                 });
             })
-            //$(this).trigger('reset') // reset the form
         })
-
-        //$('#editBox').change(function (e) {
-        //    e.preventDefault();
-        //    e.stopPropagation();
-        //    $(".styledContent").html(e.target.value);
-        //})
 
         $('#editBox').on('keyup', function(){
             var converter = new showdown.Converter(),
@@ -126,8 +104,6 @@
             e.preventDefault();
             e.stopPropagation();
             $("#sidebar").animate({ width: 'toggle' }, 50)
-            //const sidebar = document.getElementById("sidebar");
-            //sidebar.style.display = 'block';                    
         })
 
         $('#closeSidebar').click(function (e) {
@@ -136,29 +112,7 @@
             $("#sidebar").animate({ width: 'toggle' }, 50)
         })
 
-
-
-
     })
-
-    //editBox.addEventListener('input', function handleChange(event) {
-    //    newMd = event.target.value;
-    //});
-    /*
-    hamburger.addEventListener('click', function handleChange(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        const sidebar = document.getElementById("sidebar");
-        sidebar.style.display = 'block';
-    });
-
-    closeSidebar.addEventListener('click', function handleChange(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        const sidebar = document.getElementById("sidebar");
-        sidebar.style.display = 'none';
-    });
-    */
 
     // Utility for CSRF token
     function getCookie(name) {
@@ -177,25 +131,13 @@
         return cookieValue;
     }
 
-
-    /*
-
-    publish.addEventListener('click', function handleChange(event) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        const csrftoken = getCookie('csrftoken');
-
-        const xhttp = new XMLHttpRequest();
-        //xhttp.setRequestHeader('X-CSRFToken', csrftoken);
-        xhttp.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-        xhttp.open("POST", "/cms/save/", true); 
-        const postData = {
-            content: editBox.value
-        };
-        xhttp.send(JSON.stringify(postData));
+    $(document).on('keydown', function(event) {
+        if (event.keyCode == 27) {
+            if ( $("#sidebar").is(':visible') ){
+                $("#sidebar").animate({ width: 'toggle' }, 50)
+            }
+        }
     });
-    */
 
 </script>
 {% endblock %}

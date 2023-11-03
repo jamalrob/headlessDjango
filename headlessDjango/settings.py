@@ -144,3 +144,6 @@ IMG_THUMBNAIL = {
     "width": 200,
     "quality": 60
 }
+
+import os
+HOST = os.environ.get("HOST", default="http://localhost:9500/")
