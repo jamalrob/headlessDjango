@@ -25,12 +25,19 @@
         <input type="text" id="txtDate" placeholder="Date" value="{{ date }}">
         <input type="text" id="txtTags" placeholder="Tags" value="{{ tags }}">
         <input type="text" id="txtImageClass" placeholder="CSS class for main image" value="{{ imageClass }}">
-        {% if image == 'true' %}
-            <input type="checkbox" id="image" name="image" checked />
-        {% else %}
-            <input type="checkbox" id="image" name="image" />
-        {% endif %}
-        <label for="image">For the main image, use image on ImageKit named after the slug</label>
+        <div>
+            {% if image == 'true' %}
+                <input type="checkbox" id="image" name="image" checked />
+            {% else %}
+                <input type="checkbox" id="image" name="image" />
+            {% endif %}
+            <label for="image">For the main image, use image on ImageKit named after the slug</label>
+        </div>
+        <!--<button class="publish savedraft" id="savedraft">
+            <span id="action">Save draft</span>
+            <span id="savedNotice">SAVED</span>
+            <div id="loading"></div>
+        </button>        -->
         <button class="publish" id="publish">
             <span id="action">Publish post</span>
             <span id="publishedNotice">PUBLISHED</span>
@@ -61,10 +68,7 @@
 
         let slug = '{{ slug }}';
 
-        $('#publish').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
+        function savePost({ draft = false }){
             $("#action").hide();
             $("#loading").show();
 
@@ -76,6 +80,7 @@
                 tags: $("#txtTags").val(),
                 imageClass: $("#txtImageClass").val(),
                 image: $("#image").is(":checked"),
+                draft: draft,
                 csrfmiddlewaretoken: getCookie('csrftoken'),
             }
 
@@ -89,8 +94,23 @@
                     if(response.status==='created'){
                         window.location.href = `${response.host}cms/edit/${response.slug}/`;
                     }
+                    else{
+                        $("#action").show();
+                    }
                 });
-            })
+            })            
+        }
+
+        $('#savedraft').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();            
+            savePost({ draft:true });
+        })
+
+        $('#publish').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            savePost({ draft:false });
         })
 
         $('#editBox').on('keyup', function(){

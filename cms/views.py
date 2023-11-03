@@ -49,6 +49,7 @@ def save(request, slug=''):
                 image = request.POST.get('image', None)
                 imageClass = request.POST.get('imageClass', None)
                 content = request.POST.get('content', None)
+                draft = request.POST.get('draft', None)
 
                 # fm, content = frontmatter.parse(
 
@@ -60,6 +61,7 @@ def save(request, slug=''):
                     f"\ntags: {tags}"
                     f"\nimage: {image}"
                     f"\nimageClass: {imageClass}"
+                    f"\ndraft: {draft}"
                     "\n---\n"
                 )
 

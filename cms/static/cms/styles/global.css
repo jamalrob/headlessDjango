@@ -60,7 +60,7 @@ a#homeSidebar {
 
 ul.listFiles {
     width: 100%;
-    padding-left: 5px;
+    padding-left: 0;
 }
 
 ul.listFiles li {
@@ -92,8 +92,17 @@ button.publish {
     height: 60px;
 }
 
+button.savedraft {
+    right: 280px;
+    background-color: #2373ad;
+}
+
 button.publish:hover {
     background-color: #15b4a4;    
+}
+
+button.savedraft:hover {
+    background-color: #3597dd;    
 }
 
 .form {
@@ -183,6 +192,6 @@ section.panel h1 {
     to { -webkit-transform: rotate(360deg); }
 }
 
-#publishedNotice {
+#publishedNotice, #savedNotice {
     display: none;
 }
