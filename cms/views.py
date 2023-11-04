@@ -10,6 +10,7 @@ import frontmatter
 from django.shortcuts import redirect
 from cms.utils import updateMarkdownFile, createMarkdownFile, getFilesinContentFolder, getRepo
 from slugify import slugify
+import openai
 
 
 bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
@@ -36,6 +37,45 @@ def index(request):
         }
         return HttpResponse(template.render(context, request))
     return redirect("/admin/login/?next=/cms/")
+
+
+def getGPTAnswer(request):
+    if request.user.is_authenticated:
+        openai.api_key = settings.AI_SECRET_KEY    
+
+        content = request.POST.get('content')
+
+        setup = """ You are a blog writer's personal editor, and 
+                    your job is to offer suggestions for improvement, 
+                    given articles written by the user (writer)."""
+        
+        content = f'Here is a paragraph from my latest article: { content }'
+
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            #model="gpt-4", # No access till I pay
+            messages=[
+                {"role": "system", "content": setup},
+                {"role": "user", "content": content}
+            ]
+        )
+
+        print(completion.choices[0].message.content)
+
+        return JsonResponse({
+            'answer': completion.choices[0].message.content
+            }, status=200)        
+
+
+def writingAssistant(request):
+    if request.user.is_authenticated:
+        template = loader.get_template("ai.html")   
+        #context = {
+        #    #'choices': completion.choices
+        #    'choices': []
+        #}
+        return HttpResponse(template.render({}, request))
+
 
 def save(request, slug=''):
     if request.user.is_authenticated:
@@ -64,11 +104,6 @@ def save(request, slug=''):
                     f"\ndraft: {draft}"
                     "\n---\n"
                 )
-
-                #print(fmString)
-                # fm, content = frontmatter.parse(fmString)
-                #print(content[0:450])
-                #return {}
 
                 result = {}
                 if slug:

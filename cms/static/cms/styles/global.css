@@ -105,6 +105,35 @@ button.savedraft:hover {
     background-color: #3597dd;    
 }
 
+/*button.getanswer {
+    width: 240px;
+    height: 60px;
+    float: right;
+    margin-top: 30px;
+    background-color: #18897e;    
+}
+
+button.getanswer:hover {
+    background-color: #15b4a4;    
+}*/
+
+button#getAnswer {
+    background-color: #74AA9C;
+    padding-bottom: 17px;
+    width: 240px;
+}
+
+button#getAnswer:hover {
+    background-color: #417c6d;
+    padding-bottom: 17px;
+}
+
+button#getAnswer svg {
+    width: 30px;
+    vertical-align: bottom;
+    margin-bottom: -4px;
+}
+
 .form {
     position: fixed;
     left: 20px;
@@ -122,7 +151,7 @@ form.frmFrontmatter {
 
 input, textarea {
     border-radius: 5px;
-    border: 0 solid #ccc;
+    border: 1px solid #eee;
     font-size: 18px;    
     box-shadow: inset 1px 1px 2px #a9a296;
 }
@@ -149,7 +178,7 @@ textarea {
     max-width: 100%;
     line-height: 1.5;
     width: 100%;
-    height: 90vh;
+    height: 85vh;
 }
 
 section.styledContent img {
@@ -173,7 +202,7 @@ section.panel h1 {
     font-weight: bold;
 }
 
-#saveLoading, #publishLoading {
+.loading {
     display: none;
     width: 25px;
     height: 25px;
@@ -194,4 +223,47 @@ section.panel h1 {
 
 #publishedNotice, #savedNotice {
     display: none;
+}
+
+/* POPUP FOR AI */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #433;
+    background-color:rgba(0,0,0,0.5);
+    display: none;
+}
+
+.modal {
+    margin: 4rem auto;
+    width: 80vw;
+    min-width: 1000px;
+    height: 85vh;
+    background: #fffdf8;
+    z-index: 1000;
+    border-radius: 6px;
+    padding: 10px 35px;
+}
+
+.modal h3 {
+    margin-top: 0;
+}
+
+div.modal-inner {
+    display: flex;
+}
+
+div.modal-inner div.container {
+    width: 50%;
+}
+
+div.modal-inner div#originalContainer {
+    margin-right: 25px;
+}
+
+div.modal-inner div#answerContainer {
+    margin-left: 25px;
 }

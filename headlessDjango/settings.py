@@ -147,3 +147,4 @@ IMG_THUMBNAIL = {
 
 import os
 HOST = os.environ.get("HOST", default="http://localhost:9500/")
+AI_SECRET_KEY = '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'

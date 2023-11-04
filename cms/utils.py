@@ -10,10 +10,7 @@ def getRepo():
 
 def getFilesinContentFolder():
     repo = getRepo();
-    files = repo.get_contents(settings.CONTENT_FOLDER)
-    for fil in files:
-        print(fil)
-    return files
+    return repo.get_contents(settings.CONTENT_FOLDER)
 
 def updateMarkdownFile(slug, fm, content):
     filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'

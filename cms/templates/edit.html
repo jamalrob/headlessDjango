@@ -36,12 +36,12 @@
         <button class="publish savedraft" id="savedraft">
             <span id="saveAction">Save draft</span>
             <span id="savedNotice">SAVED</span>
-            <div id="saveLoading"></div>
+            <div id="saveLoading" class="loading"></div>
         </button>
         <button class="publish" id="publish">
             <span id="publishAction">Publish post</span>
             <span id="publishedNotice">PUBLISHED</span>
-            <div id="publishLoading"></div>
+            <div id="publishLoading" class="loading"></div>
         </button>
     </form>
 </div>
@@ -56,6 +56,42 @@
                 </svg>
             </a>
             <textarea id="editBox">{% autoescape off %}{{ md_content }}{% endautoescape %}</textarea>
+            <div class="box">
+                <button class="getAnswer" id="getAnswer"> 
+                    <!-- chatGPT/OpenAI logo -->
+                    <span id="answerAction">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2406 2406">
+                            <path id="a" d="M1107.3 299.1c-197.999 0-373.9 127.3-435.2 315.3L650 743.5v427.9c0 21.4 11 40.4 29.4 51.4l344.5 198.515V833.3h.1v-27.9L1372.7 604c33.715-19.52 70.44-32.857 108.47-39.828L1447.6 450.3C1361 353.5 1237.1 298.5 1107.3 299.1zm0 117.5-.6.6c79.699 0 156.3 27.5 217.6 78.4-2.5 1.2-7.4 4.3-11 6.1L952.8 709.3c-18.4 10.4-29.4 30-29.4 51.4V1248l-155.1-89.4V755.8c-.1-187.099 151.601-338.9 339-339.2z" fill="#fff"/>
+                            <use xlink:href="#a" transform="rotate(60 1203 1203)"/>
+                              <use xlink:href="#a" transform="rotate(120 1203 1203)"/>
+                            <use xlink:href="#a" transform="rotate(180 1203 1203)"/>
+                            <use xlink:href="#a" transform="rotate(240 1203 1203)"/>
+                            <use xlink:href="#a" transform="rotate(300 1203 1203)"/>
+                        </svg>                                          
+                        
+                        Get an alternative</span>
+                    <div id="answerLoading" class="loading"></div>
+                </button>
+            </div>
+
+            <div class="modal-container">
+                <div class="modal">
+                    <h1>Your Writing Assistant</h1>
+                    <div class="modal-inner">
+                        <div id="originalContainer" class="container">
+                            <h3>Original</h3>
+                            <div id="originalText"></div>
+                        </div>
+                        <div id="answerContainer" class="container">
+                            <h3>Suggestions</h3>
+                            <div id="answerText"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </section>
     <section class="styledContent col">
@@ -158,11 +194,57 @@
         return cookieValue;
     }
 
+    function getSelectedText(idoftextarea){
+        var textArea = document.getElementById(idoftextarea);
+        var text =textArea.value;
+        var indexStart=textArea.selectionStart;
+        var indexEnd=textArea.selectionEnd;
+        return text.substring(indexStart, indexEnd);
+    }
+
+    $('#getAnswer').click(function(e) { 
+        e.preventDefault();
+        e.stopPropagation();
+        $('#answerLoading').show()
+        $('#answerAction').hide()        
+
+        const url = '/cms/ai/getanswer/';
+        var data = {
+            content: getSelectedText('editBox'),
+            csrfmiddlewaretoken: getCookie('csrftoken'),
+        }
+
+        /*
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+        }).done(function (response) {
+            $(".modal-container").show();
+            $('#answerLoading').hide()
+            $('#answerAction').show()
+            $('#answer').text(response.answer);
+        })           
+        */
+
+        $(".modal-container").show();
+        $('#answerLoading').hide()
+        $('#answerAction').show()
+        $('#originalText').text(getSelectedText('editBox'))
+        $('#answerText').text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+
+
+    })
+
     $(document).on('keydown', function(event) {
         if (event.keyCode == 27) {
-            if ( $("#sidebar").is(':visible') ){
-                $("#sidebar").animate({ width: 'toggle' }, 50)
-            }
+            if ( $(".modal-container").is(':visible') ){
+                $(".modal-container").hide();
+            } else {
+                if ( $("#sidebar").is(':visible') ){
+                    $("#sidebar").animate({ width: 'toggle' }, 50)
+                }
+            }    
         }
     });
 
