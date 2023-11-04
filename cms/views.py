@@ -24,12 +24,12 @@ def index(request):
     if request.user.is_authenticated:
         #slug = 'the-argument-for-indirect-realism'
         #repo = getRepo();
-        #filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'    
+        #filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
         # [t.strip() for t in data['tags'].split(',')]
 
         # Use a sanitizer like bleach here
         files = getFilesinContentFolder()
-        
+
         files = list(map(lambda x: x.path.replace('content/', '').replace('.mdx', ''), files))
         template = loader.get_template("chooseFile.html")
         context = {
@@ -41,15 +41,15 @@ def index(request):
 
 def getGPTAnswer(request):
     if request.user.is_authenticated:
-        openai.api_key = settings.AI_SECRET_KEY    
+        openai.api_key = settings.AI_SECRET_KEY
 
         content = request.POST.get('content')
 
-        setup = """ You are a blog writer's personal editor, and 
-                    your job is to offer suggestions for improvement, 
-                    given articles written by the user (writer)."""
-        
-        content = f'Here is a paragraph from my latest article: { content }'
+        setup = """ You are a blog writer's personal editor, and
+                    your job is to offer suggestions for improvement,
+                    given content written by the user (writer)."""
+
+        content = f'Here is an excerpt from my latest article: { content }'
 
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -60,16 +60,14 @@ def getGPTAnswer(request):
             ]
         )
 
-        print(completion.choices[0].message.content)
-
         return JsonResponse({
             'answer': completion.choices[0].message.content
-            }, status=200)        
+            }, status=200)
 
 
 def writingAssistant(request):
     if request.user.is_authenticated:
-        template = loader.get_template("ai.html")   
+        template = loader.get_template("ai.html")
         #context = {
         #    #'choices': completion.choices
         #    'choices': []
@@ -117,16 +115,16 @@ def save(request, slug=''):
                     slug = slugify(title)
                     result = createMarkdownFile(slug, fmString, content)
                     # RETURNS e.g..
-                    # {'content': ContentFile(path="content/a-test-title-2.mdx"), 'commit': Commit(sha="57ef9705105d18a3554c6a15d39bf6fe5c428b38")}                    
+                    # {'content': ContentFile(path="content/a-test-title-2.mdx"), 'commit': Commit(sha="57ef9705105d18a3554c6a15d39bf6fe5c428b38")}
                     return JsonResponse({
                         'status': 'created',
                         'slug': slug,
                         'host': settings.HOST
                         }, status=200)
-                
-           
+
+
             return JsonResponse({'status': 'Invalid request'}, status=400)
-        
+
         return HttpResponseBadRequest('Invalid request')
     return redirect("/admin/login/?next=/cms/")
 
@@ -138,7 +136,7 @@ def edit(request, slug=''):
         md_as_html = ''
         md_content = ''
         if slug:
-            filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'    
+            filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
             file_content = repo.get_contents(filePath)
             txt = file_content.decoded_content.decode()
             data = frontmatter.loads(txt)
@@ -149,7 +147,7 @@ def edit(request, slug=''):
             # NOTE: tags as an array:
             # [t.strip() for t in data['tags'].split(',')]
 
-        
+
         # Use a sanitizer like bleach here
 
         title = data.get("title") or ''

@@ -118,13 +118,13 @@ button.getanswer:hover {
 }*/
 
 button#getAnswer {
-    background-color: #74AA9C;
+    background-color: #437c6d;
     padding-bottom: 17px;
-    width: 240px;
+    width: 320px;
 }
 
 button#getAnswer:hover {
-    background-color: #417c6d;
+    background-color: #49a991;
     padding-bottom: 17px;
 }
 
@@ -245,7 +245,7 @@ section.panel h1 {
     background: #fffdf8;
     z-index: 1000;
     border-radius: 6px;
-    padding: 10px 35px;
+    padding: 35px;
 }
 
 .modal h3 {
@@ -258,9 +258,6 @@ div.modal-inner {
 
 div.modal-inner div.container {
     width: 50%;
-    height: 660px;
-    overflow: auto;
-    padding: 10px;
 }
 
 div.modal-inner div#originalContainer {
@@ -269,6 +266,12 @@ div.modal-inner div#originalContainer {
 
 div.modal-inner div#answerContainer {
     margin-left: 25px;
+}
+
+div#answerText, div#originalText {
+    overflow: auto;
+    height: 645px;
+    margin-bottom: 5px;
 }
 
 a#copy {
