@@ -33,15 +33,15 @@
             {% endif %}
             <label for="image">For the main image, use image on ImageKit named after the slug</label>
         </div>
-        <!--<button class="publish savedraft" id="savedraft">
-            <span id="action">Save draft</span>
+        <button class="publish savedraft" id="savedraft">
+            <span id="saveAction">Save draft</span>
             <span id="savedNotice">SAVED</span>
-            <div id="loading"></div>
-        </button>        -->
+            <div id="saveLoading"></div>
+        </button>
         <button class="publish" id="publish">
-            <span id="action">Publish post</span>
+            <span id="publishAction">Publish post</span>
             <span id="publishedNotice">PUBLISHED</span>
-            <div id="loading"></div>
+            <div id="publishLoading"></div>
         </button>
     </form>
 </div>
@@ -69,8 +69,13 @@
         let slug = '{{ slug }}';
 
         function savePost({ draft = false }){
-            $("#action").hide();
-            $("#loading").show();
+
+            const actionElement = draft ? "#saveAction" : "#publishAction"
+            const loadingElement = draft ? "#saveLoading" : "#publishLoading"
+            const noticeElement = draft ? "#savedNotice" : "#publishedNotice"
+            
+            $(actionElement).hide();
+            $(loadingElement).show();
 
             const url = (slug === '' ? '/cms/new/create/' : `/cms/${ slug }/save/`);
             var data = {
@@ -89,13 +94,15 @@
                 type: 'POST',
                 data: data,
             }).done(function (response) {
-                $("#loading").hide();          
-                $("#publishedNotice").show().delay(2000).fadeOut(function(){
+                $(loadingElement).hide();
+                const noticeElement = draft ? "#savedNotice" : "#publishedNotice";
+                $(noticeElement).show().delay(2000).fadeOut(function(){
+                    $(actionElement).show();
                     if(response.status==='created'){
                         window.location.href = `${response.host}cms/edit/${response.slug}/`;
                     }
                     else{
-                        $("#action").show();
+                        $(actionElement).show();
                     }
                 });
             })            
