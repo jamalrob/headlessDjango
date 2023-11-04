@@ -4,8 +4,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('files/', views.getFiles, name="files"),
-    #path('edit/<slug:slug>/', views.edit, name="edit"),
+    path('files/', views.get_files, name="files"),
+    path('edit/<slug:slug>/', views.get_post, name="get_post"),
     #path('<slug:slug>/save/', views.save, name='save'),
     #path('new/', views.edit, name='new'),
     #path('new/create/', views.save, name='savenew'),

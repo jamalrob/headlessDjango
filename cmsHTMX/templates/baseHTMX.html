@@ -18,7 +18,7 @@
         <link rel="apple-touch-icon" href="icon.png">
 
         <script src="{% static 'cms/scripts/htmx.min.js' %}"></script>
-        <!--<script src="{% static 'cms/scripts/jquery.min.js' %}"></script>-->
+        <script src="{% static 'cms/scripts/_hyperscript.min.js' %}"></script>
         <script src="{% static 'cms/scripts/showdown.min.js' %}"></script>
     </head>
     <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>

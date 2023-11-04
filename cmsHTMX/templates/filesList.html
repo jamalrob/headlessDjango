@@ -1,5 +1,5 @@
 {% for f in files %}
 <li>
-    <a href="edit/{{ f }}/">{{ f }}</a>
+    <a href="edit/{{ f }}/" hx-target="main" hx-trigger="click" hx-get="{% url 'get_post' f %}">{{ f }}</a>
 </li>
 {% endfor %}

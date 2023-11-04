@@ -50,6 +50,10 @@ main {
     box-shadow: 2px 0px 3px #c3c1c0;
 }
 
+#sidebar.visible {
+    display: block;
+}
+
 a#closeSidebar {
     float: right;
 }
