@@ -118,13 +118,15 @@ button.getanswer:hover {
 }*/
 
 button#getAnswer {
-    background-color: #437c6d;
+    /*background-color: #437c6d;*/
+    background-color: #18897e;
     padding-bottom: 17px;
     width: 320px;
+    margin-top: 10px;
 }
 
 button#getAnswer:hover {
-    background-color: #49a991;
+    background-color: #15b4a4;
     padding-bottom: 17px;
 }
 
