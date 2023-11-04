@@ -56,7 +56,10 @@ ROOT_URLCONF = 'headlessDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/user/websites/headlessDjango/cms/templates/'],
+        'DIRS': [
+            '/home/user/websites/headlessDjango/cms/templates/',
+            '/home/user/websites/headlessDjango/cmsHTMX/templates/'
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,0 +1,14 @@
+{% extends "baseHTMX.html" %}
+{% block body %}
+<main>
+    <section class="panel">
+        <h1>Files</h1>
+        <p>
+            <h3><a href="new/">Create new</a></h3>
+        </p>
+        <ul class="listFiles" hx-trigger="load" hx-get="{% url 'files' %}" hx-indicator="#spinner">
+        </ul>
+        <div id="spinner"></div>
+    </section>
+</main>
+{% endblock %}
