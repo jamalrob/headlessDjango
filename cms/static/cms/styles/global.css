@@ -51,7 +51,7 @@ main {
 }
 
 #sidebar.visible {
-    display: block;
+    display: block !important;
 }
 
 a#closeSidebar {
@@ -138,6 +138,7 @@ button#getAnswer svg {
     width: 30px;
     vertical-align: bottom;
     margin-bottom: -4px;
+    margin-left: -8px;
 }
 
 .form {
@@ -243,6 +244,10 @@ section.panel h1 {
     display: none;
 }
 
+.modal-container.visible {
+    display: block !important;
+}
+
 .modal {
     margin: 4rem auto;
     width: 80vw;
@@ -315,4 +320,41 @@ blockquote {
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
     margin: auto
+}
+
+.modal .htmx-request {
+    width: 60px;
+    height: 60px;
+    margin-top: 100px;
+}
+
+button .htmx-request {
+    border: 3px solid rgba(242, 236, 234, 0.3);
+    border-top-color: #e1dddc;
+}
+
+div.underTextarea {
+    display: flex;
+}
+
+div.underTextarea .col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0 0 0 5px;
+    width: 50%;
+}
+
+div.underTextarea ol {
+    margin: 5px 0 0 0;
+    font-size: 15px;
+    padding: 3px 0 0 15px;
+}
+
+div.underTextarea ol li {
+    line-height: 1.3;
+}
+
+button#getAnswer {
+    align-self:flex-end;
 }

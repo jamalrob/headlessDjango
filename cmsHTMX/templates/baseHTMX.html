@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title></title>
         {% load static %}
-        <link rel="stylesheet" href="{% static 'cms/styles/global.css' %}">
+        <link rel="stylesheet" href="{% static 'cmsHTMX/styles/global.css' %}">
         <meta name="description" content="">
 
         <meta property="og:title" content="">
@@ -17,11 +17,11 @@
         <link rel="icon" href="/icon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="icon.png">
 
-        <script src="{% static 'cms/scripts/htmx.min.js' %}"></script>
-        <script src="{% static 'cms/scripts/_hyperscript.min.js' %}"></script>
-        <script src="{% static 'cms/scripts/showdown.min.js' %}"></script>
+        <script src="{% static 'cmsHTMX/scripts/htmx.min.js' %}"></script>
+        <script src="{% static 'cmsHTMX/scripts/_hyperscript.min.js' %}"></script>
+        <script src="{% static 'cmsHTMX/scripts/showdown.min.js' %}"></script>
     </head>
     <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    {% block body %}{% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>

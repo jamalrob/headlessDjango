@@ -50,12 +50,17 @@ main {
     box-shadow: 2px 0px 3px #c3c1c0;
 }
 
+#sidebar.visible {
+    display: block !important;
+}
+
 a#closeSidebar {
     float: right;
 }
 
 a#homeSidebar {
-    float: left;
+    position: absolute;
+    bottom: 35px;
 }
 
 ul.listFiles {
@@ -134,6 +139,7 @@ button#getAnswer svg {
     width: 30px;
     vertical-align: bottom;
     margin-bottom: -4px;
+    margin-left: -8px;
 }
 
 .form {
@@ -239,6 +245,10 @@ section.panel h1 {
     display: none;
 }
 
+.modal-container.visible {
+    display: block !important;
+}
+
 .modal {
     margin: 4rem auto;
     width: 80vw;
@@ -292,4 +302,60 @@ a#copy.showing::before {
     position: absolute;
     right: 36px;
     top: 4px;
+}
+
+blockquote {
+    color: #4e4e4e;
+    background: rgb(247, 240, 230);
+    margin: 0 2rem 0 0;
+    padding: 0.3rem 2.2rem 0.3rem;
+    border-left: solid 6px rgb(203, 194, 184);
+}
+
+.htmx-request {
+    width: 25px;
+    height: 25px;
+    border: 3px solid rgba(168, 147, 137, 0.3);
+    border-radius: 50%;
+    border-top-color: #957d76;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    margin: auto
+}
+
+.modal .htmx-request {
+    width: 60px;
+    height: 60px;
+    margin-top: 100px;
+}
+
+button .htmx-request {
+    border: 3px solid rgba(242, 236, 234, 0.3);
+    border-top-color: #e1dddc;
+}
+
+div.underTextarea {
+    display: flex;
+}
+
+div.underTextarea .col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0 0 0 5px;
+    width: 50%;
+}
+
+div.underTextarea ol {
+    margin: 5px 0 0 0;
+    font-size: 15px;
+    padding: 3px 0 0 15px;
+}
+
+div.underTextarea ol li {
+    line-height: 1.3;
+}
+
+button#getAnswer {
+    align-self:flex-end;
 }
