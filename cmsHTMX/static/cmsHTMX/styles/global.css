@@ -7,6 +7,16 @@ body {
     font-family: -apple-system,BlinkMacSystemFont,'avenir next',avenir,'helvetica neue',helvetica,ubuntu,roboto,noto,'segoe ui',arial,sans-serif;
     line-height: 1.62;
     font-size: 19px;
+    height: 100%;
+}
+
+body.dark {
+    background: #333131;
+    color: #f0eaea;
+}
+
+body.dark a {
+    color: #9cc8fa;
 }
 
 * {

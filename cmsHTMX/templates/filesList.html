@@ -1,5 +1,8 @@
 {% for f in files %}
 <li>
     <a href="edit/{{ f }}/" hx-boost="true">{{ f }}</a>
+    <!-- Above does similar to the following but back button works better
+        <a href="#" hx-get="edit/{{ f }}/" hx-target="main" hx-push-url="edit/{{ f }}/">{{ f }}</a>
+    -->
 </li>
 {% endfor %}

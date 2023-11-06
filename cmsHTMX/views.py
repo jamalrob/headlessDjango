@@ -65,12 +65,16 @@ def get_post(request, slug=''):
         title = data.get("title") or ''
         date = data.get("date") or ''
         tags = data.get("tags") or ''
-        image = data.get("image") or ''
+        image = data.get("image")
         draft = data.get("draft")
         if draft:
             draft = False if draft == 'false' or draft == '' else True
         else:
             draft = ''
+        if image:
+            image = False if image == 'false' or image == '' else True
+        else:
+            image = ''
         imageClass = data.get("imageClass") or ''
         html = md_as_html or ''
 

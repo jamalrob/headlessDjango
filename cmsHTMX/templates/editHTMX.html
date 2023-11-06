@@ -21,11 +21,7 @@
         <input type="text" name="tags" id="txtTags" placeholder="Tags" value="{{ tags }}">
         <input type="text" name="imageClass" id="txtImageClass" placeholder="CSS class for main image" value="{{ imageClass }}">
         <div>
-            {% if image == 'true' %}
-                <input type="checkbox" id="image" name="image" checked />
-            {% else %}
-                <input type="checkbox" id="image" name="image" />
-            {% endif %}
+            <input type="checkbox" id="image" name="image" />
             <label for="image">For the main image, use image on ImageKit named after the slug</label>
         </div>
 
@@ -170,6 +166,7 @@
     on load from body
         set draft to '{{ draft }}'
         set slug to '{{ slug }}'
+        set image to '{{ image }}'
         if draft is 'False' or draft is empty or draft is 'false'
             if slug is not empty
                 hide #savedraft
@@ -178,6 +175,10 @@
         else
             show #savedraft
             hide #unpublish
+        end
+
+        if image is 'True' or image is 'true' or image is true
+            add [@checked] to #image
     end
 
 
