@@ -2,12 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.template import loader
 from django.shortcuts import redirect
-from cms.utils import updateMarkdownFile, createMarkdownFile, getFilesinContentFolder, getRepo
+from cms.utils import updateOrCreate, build_content, getFilesinContentFolder, getRepo
 from django.conf import settings
 import markdown
 import frontmatter
 import openai
-from slugify import slugify
 
 bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
 
@@ -63,13 +62,19 @@ def get_post(request, slug):
 
 
         # Use a sanitizer like bleach here
-
         title = data.get("title") or ''
         date = data.get("date") or ''
         tags = data.get("tags") or ''
-        image = data.get("image") or 'false'
-        if image == True:
-            image = 'true'
+        image = data.get("image") or ''
+        draft = data.get("draft")
+        print("=======================")
+        print(draft)
+        print("=======================")
+
+        if draft:
+            draft = False if draft == 'false' or draft == '' else True
+        #if image == True:
+        #    image = 'true'
         imageClass = data.get("imageClass") or ''
         html = md_as_html or ''
 
@@ -78,6 +83,7 @@ def get_post(request, slug):
             "date": date,
             "tags": tags,
             "image": image,
+            "draft": draft,
             "slug": slug,
             "imageClass": imageClass,
             "md_content": md_content,
@@ -101,18 +107,19 @@ def get_suggestion(request):
         #content = "There once was a green large lake at the bottom of my garden but now it's gone and I be unsure exakerly why."
         content = f'Here is an excerpt from my latest article: { content_to_fix }'
 
-        #suggestion = "Lorem Ipsum is simply dummy\n\n text of the printing\n\n and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,\n\n when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        suggestion = "Lorem Ipsum is simply dummy\n\n text of the printing\n\n and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,\n\n when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
 
-        completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            #model="gpt-4", # No access till I pay
-            messages=[
-                {"role": "system", "content": setup},
-                {"role": "user", "content": content}
-            ]
-        )
-        suggestion = completion.choices[0].message.content
-
+        #completion = openai.ChatCompletion.create(
+        #    model="gpt-3.5-turbo",
+        #    #model="gpt-4", # No access till I pay
+        #    messages=[
+        #        {"role": "system", "content": setup},
+        #        {"role": "user", "content": content}
+        #    ]
+        #)
+        #suggestion = completion.choices[0].message.content
+        import time
+        time.sleep(5)
         context = {
             'original': content,
             'answer': suggestion.replace("\n","<br />")
@@ -120,56 +127,20 @@ def get_suggestion(request):
         template = loader.get_template("suggestion.html")
         return HttpResponse(template.render(context, request))
 
+def publish(request, slug=None):
+    if request.user.is_authenticated and request.method == 'POST':
+        post = build_content(request, draft=False)
+        return HttpResponse(updateOrCreate(post, slug))
 
-def save(request, slug=''):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
+def save_draft(request, slug=None):
+    if request.user.is_authenticated and request.method == 'POST':
+        post = build_content(request, draft=True)
+        return HttpResponse(updateOrCreate(post, slug))
 
-            CHECKBOX_MAPPING = {'on': 'true', 'off': 'false'}
-
-            title = request.POST.get('title', '')
-            date = request.POST.get('date', '')
-            tags = request.POST.get('tags', '')
-            image = CHECKBOX_MAPPING.get(request.POST.get('image'), '')
-            imageClass = request.POST.get('imageClass', '')
-            content = request.POST.get('content', '')
-            draft = request.POST.get('draft', '')
-
-            # fm, content = frontmatter.parse(
-
-            # Rebuild the frontmatter
-            fmString = (
-                "---"
-                f"\ntitle: '{title}'"
-                f"\ndate: '{date}'"
-                f"\ntags: {tags}"
-                f"\nimage: {image}"
-                f"\nimageClass: {imageClass}"
-                f"\ndraft: {draft}"
-                "\n---\n"
-            )
-
-            result = {}
-            if slug:
-                result = updateMarkdownFile(slug, fmString, content)
-                return JsonResponse({
-                    'status': 'updated',
-                    'slug': slug,
-                    'host': settings.HOST
-                    }, status=200)
-            else:
-                slug = slugify(title)
-                result = createMarkdownFile(slug, fmString, content)
-                # RETURNS e.g..
-                # {'content': ContentFile(path="content/a-test-title-2.mdx"), 'commit': Commit(sha="57ef9705105d18a3554c6a15d39bf6fe5c428b38")}
-                return JsonResponse({
-                    'status': 'created',
-                    'slug': slug,
-                    'host': settings.HOST
-                    }, status=200)
+def unpublish(request, slug):
+    if request.user.is_authenticated and request.method == 'POST':
+        post = build_content(request, draft=True)
+        return HttpResponse(updateOrCreate(post, slug))
 
 
-            return JsonResponse({'status': 'Invalid request'}, status=400)
-
-        return HttpResponseBadRequest('Invalid request')
-    return redirect("/admin/login/?next=/cms/")
+# {% if draft or not slug %}

@@ -1,6 +1,40 @@
 from github import Github, Auth
 from django.conf import settings
+from slugify import slugify
 
+def build_content(request, draft):
+
+    CHECKBOX_MAPPING = {'on': 'true', 'off': 'false'}
+    content = request.POST.get('content', '')
+    title = request.POST.get('title', '')
+
+    fmString = (
+        "---"
+        f"\ntitle: '{title}'"
+        f"\ndate: '{request.POST.get('date', '')}'"
+        f"\ntags: {request.POST.get('tags', '')}"
+        f"\nimage: {CHECKBOX_MAPPING.get(request.POST.get('image'), '')}"
+        f"\nimageClass: {request.POST.get('imageClass', '')}"
+        f"\ndraft: {'true' if draft else 'false'}"
+        "\n---\n"
+    )
+
+    return {
+        "fmString": fmString,
+        "content": content,
+        "title": title
+    }
+
+
+def updateOrCreate(post, slug):
+    result = ""
+    if slug:
+        if updateMarkdownFile(slug, post.get("fmString"), post.get("content")):
+            result = '<span class="status">UPDATED</span>'
+    else:
+        if createMarkdownFile(slugify(post.get("title")), post.get("fmString"), post.get("content")):
+            result = '<span class="status">CREATED</span>'
+    return result
 
 def getRepo():
     auth = Auth.Token(settings.DGTOKEN)

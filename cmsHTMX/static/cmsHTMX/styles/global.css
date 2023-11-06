@@ -59,8 +59,10 @@ a#closeSidebar {
 }
 
 a#homeSidebar {
+    display: inline-block;
+    margin-right: 15px;
     position: absolute;
-    bottom: 35px;
+    bottom: 32px;
 }
 
 ul.listFiles {
@@ -87,28 +89,12 @@ button:hover {
     cursor: pointer;
 }
 
-button.publish {
+div.buttonrow {
     position: absolute;
-    right: 31px;
-    background-color: #18897e;
+    right: 24px;
     bottom: 40px;
-    margin-top: 15px;
-    width: 240px;
-    height: 60px;
 }
 
-button.savedraft {
-    right: 280px;
-    background-color: #2373ad;
-}
-
-button.publish:hover {
-    background-color: #15b4a4;
-}
-
-button.savedraft:hover {
-    background-color: #3597dd;
-}
 
 /*button.getanswer {
     width: 240px;
@@ -312,12 +298,51 @@ blockquote {
     border-left: solid 6px rgb(203, 194, 184);
 }
 
+.spinner {
+    display: inline-block;
+}
+
+button.publish {
+    /*position: absolute;*/
+    /*right: 31px;*/
+    background-color: #18897e;
+    /*bottom: 40px;*/
+    margin-top: 15px;
+    width: 200px;
+    vertical-align: bottom;
+    height: 50px;
+}
+button.publish:hover {
+    background-color: #15b4a4;
+}
+
+button.savedraft:disabled, button.savedraft:disabled:hover {
+    background-color: #cdcdcd;
+    cursor: auto;
+}
+
+button.savedraft {
+    /*right: 242px;*/
+    background-color: #2373ad;
+}
+button.savedraft:hover {
+    background-color: #3597dd;
+}
+
+button.unpublish {
+    background-color: #b17895;
+}
+button.unpublish:hover {
+    background-color: #cd77a4;
+}
+
+
 .htmx-request {
-    width: 25px;
-    height: 25px;
-    border: 3px solid rgba(168, 147, 137, 0.3);
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(93, 101, 145, 0.3);
     border-radius: 50%;
-    border-top-color: #957d76;
+    border-top-color: #9f766c;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
     margin: auto
@@ -330,7 +355,7 @@ blockquote {
 }
 
 button .htmx-request {
-    border: 3px solid rgba(242, 236, 234, 0.3);
+    border: 3px solid rgba(140, 195, 212, 0.3);
     border-top-color: #e1dddc;
 }
 
