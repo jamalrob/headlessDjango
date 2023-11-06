@@ -2,7 +2,16 @@
 {% block body %}
 <div id="sidebar">
 
-    <strong><small>POST STATUS: <span id="poststatus">{% if draft %}Draft{% else %}Published{% endif %}</span></small></strong>
+    <strong><small>POST STATUS: <span id="poststatus">
+        {% if draft %}
+        Draft
+        {% else %}
+            {% if slug %}
+            Published
+            {% else %}
+            Draft
+            {% endif %}
+        {% endif %}</span></small></strong>
     <a href="#" id="closeSidebar" _="on click remove .visible from #sidebar">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="left-arrow" class="small icon"><g data-name="Layer 2"><g data-name="arrowhead-left" fill="#134563"><path d="M11.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L7.29 12l4.48-5.37a1 1 0 0 0-.13-1.4z"></path><path d="m14.29 12 4.48-5.37a1 1 0 0 0-1.54-1.28l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63z"></path></g></g></svg>
     </a>
@@ -29,12 +38,13 @@
             <button
                 class="publish savedraft"
                 id="savedraft"
-                hx-post="{% url 'cmshtmx_savedraft' slug %}"
+                hx-post="{% url 'cmshtmx_savedraft' %}"
                 hx-swap="beforeend"
                 hx-indicator="#saveLoading"
                 hx-vals="js:{
                     content: document.getElementById('editBox').value,
-                    draft: true
+                    draft: true,
+                    slug: '{{ slug }}'
                 }"
                 hx-select=".status"
                 hx-on::after-request="showAfterRequest('saveAction', 1000)"
@@ -47,12 +57,13 @@
             <button
                 class="publish unpublish"
                 id="unpublish"
-                hx-post="{% url 'cmshtmx_unpublish' slug %}"
+                hx-post="{% url 'cmshtmx_unpublish' %}"
                 hx-swap="beforeend"
                 hx-indicator="#unpublishLoading"
                 hx-vals="js:{
                     content: document.getElementById('editBox').value,
-                    draft: true
+                    draft: true,
+                    slug: '{{ slug }}'
                 }"
                 hx-select=".status"
                 hx-on::after-request="showAfterRequest('unpublishAction', 1000)"
@@ -65,11 +76,12 @@
             <button
                 class="publish"
                 id="publish"
-                hx-post="{% url 'cmshtmx_publish' slug %}"
+                hx-post="{% url 'cmshtmx_publish' %}"
                 hx-swap="beforeend"
                 hx-indicator="#publishLoading"
                 hx-vals="js:{
-                    content: document.getElementById('editBox').value
+                    content: document.getElementById('editBox').value,
+                    slug: '{{ slug }}'
                 }"
                 hx-select=".status"
                 hx-on::after-request="showAfterRequest('publishAction', 1000)"
@@ -157,9 +169,12 @@
 
     on load from body
         set draft to '{{ draft }}'
-        if draft is 'False'
-            hide #savedraft
-            show #unpublish
+        set slug to '{{ slug }}'
+        if draft is 'False' or draft is empty or draft is 'false'
+            if slug is not empty
+                hide #savedraft
+                show #unpublish
+            end
         else
             show #savedraft
             hide #unpublish

@@ -41,7 +41,7 @@ def get_files(request):
         #}, status=200)
 
 
-def get_post(request, slug):
+def get_post(request, slug=''):
     if request.user.is_authenticated:
 
         repo = getRepo();
@@ -67,14 +67,10 @@ def get_post(request, slug):
         tags = data.get("tags") or ''
         image = data.get("image") or ''
         draft = data.get("draft")
-        print("=======================")
-        print(draft)
-        print("=======================")
-
         if draft:
             draft = False if draft == 'false' or draft == '' else True
-        #if image == True:
-        #    image = 'true'
+        else:
+            draft = ''
         imageClass = data.get("imageClass") or ''
         html = md_as_html or ''
 
@@ -127,18 +123,26 @@ def get_suggestion(request):
         template = loader.get_template("suggestion.html")
         return HttpResponse(template.render(context, request))
 
-def publish(request, slug=None):
+#def publish(request, draft=True):
+#    if request.user.is_authenticated and request.method == 'POST':
+#        post = build_content(request, draft=False)
+#        return HttpResponse(updateOrCreate(post, slug))
+
+def publish(request):
     if request.user.is_authenticated and request.method == 'POST':
+        slug = request.POST.get('slug', '')
         post = build_content(request, draft=False)
         return HttpResponse(updateOrCreate(post, slug))
 
-def save_draft(request, slug=None):
+def save_draft(request):
     if request.user.is_authenticated and request.method == 'POST':
+        slug = request.POST.get('slug', '')
         post = build_content(request, draft=True)
         return HttpResponse(updateOrCreate(post, slug))
 
-def unpublish(request, slug):
+def unpublish(request):
     if request.user.is_authenticated and request.method == 'POST':
+        slug = request.POST.get('slug', '')
         post = build_content(request, draft=True)
         return HttpResponse(updateOrCreate(post, slug))
 

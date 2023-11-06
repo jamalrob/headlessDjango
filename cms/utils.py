@@ -7,6 +7,11 @@ def build_content(request, draft):
     CHECKBOX_MAPPING = {'on': 'true', 'off': 'false'}
     content = request.POST.get('content', '')
     title = request.POST.get('title', '')
+    if draft or draft == 'true':
+        draft = 'true'
+    else:
+        draft = 'false'
+
 
     fmString = (
         "---"
@@ -15,7 +20,7 @@ def build_content(request, draft):
         f"\ntags: {request.POST.get('tags', '')}"
         f"\nimage: {CHECKBOX_MAPPING.get(request.POST.get('image'), '')}"
         f"\nimageClass: {request.POST.get('imageClass', '')}"
-        f"\ndraft: {'true' if draft else 'false'}"
+        f"\ndraft: {draft}"
         "\n---\n"
     )
 
@@ -24,7 +29,6 @@ def build_content(request, draft):
         "content": content,
         "title": title
     }
-
 
 def updateOrCreate(post, slug):
     result = ""
