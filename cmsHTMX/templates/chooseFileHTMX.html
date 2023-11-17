@@ -3,19 +3,35 @@
 <main>
     <section class="filesList">
         <h1>Blog posts</h1>
-        <p>
-            <h3><a href="new/" hx-boost="true" hx-indicator="#spinner">Write a new post</a></h3>
-        </p>
+        <div class="buttonRow">
+            <input type="search" id="searchPosts" placeholder="Search" />
+            <button
+                id="newPost"
+                hx-get="new/"
+                hx-target="body"
+                hx-push-url="true"
+                hx-indicator="#spinner"
+                >
+                    New post
+            </button>
+        </div>
         <div id="spinner"></div>
         <ul
             class="listFiles"
             hx-trigger="load"
             hx-get="{% url 'cmshtmx_files' %}"
             hx-indicator="#spinner"
+            hx-on::after-request="fadeInPosts()"
             >
         </ul>
     </section>
 </main>
+
+<script type="text/hyperscript">
+    def fadeInPosts()
+        transition .listFiles opacity to 1 over 0.15s
+    end
+</script>
 
 <style>
 
@@ -29,7 +45,7 @@
         width: 40px;
         height: 40px;
         position: absolute;
-        top: 83px;
+        top: 30px;
         right: 3px;
     }
 
@@ -37,6 +53,7 @@
         width: 100%;
         padding-left: 0;
         font-size: 1.3rem;
+        opacity: 0;
     }
 
     ul.listFiles li {
@@ -46,6 +63,31 @@
 
     ul.listFiles > li:nth-child(odd){
         background-color: #ebebea;
+    }
+
+    section.filesList .buttonRow {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button#newPost {
+        background-color: #18897e;
+        padding: 10px 36px;
+    }
+
+    button#newPost:hover {
+        background-color: #15b4a4;
+    }
+
+    button#newPost svg {
+        width: 30px;
+        vertical-align: bottom;
+        margin-bottom: -4px;
+        margin-left: -8px;
+    }
+
+    #searchPosts {
+        padding-left: 8px;
     }
 </style>
 {% endblock %}

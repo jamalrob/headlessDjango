@@ -27,7 +27,7 @@ def get_files(request):
     repo = getRepo()
     files = getFilesinContentFolder()
 
-    # To get more dat into the list, but it's too slow:
+    # To get more data into the list, but it's too slow:
     #files = list(map(lambda x: { "slug": x.path.replace('content/', '').replace('.mdx', ''), "title": frontmatter.loads(x.decoded_content.decode()).get("title") }, files))
 
     files = list(map(lambda x: x.path.replace('content/', '').replace('.mdx', ''), files))

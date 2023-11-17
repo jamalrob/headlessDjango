@@ -104,11 +104,11 @@ input[type="checkbox"] {
     margin-top: 15px;
 }
 
-input[type='text'] {
+input[type='text'], input[type='date'] {
     display: block;
     padding: 10px;
     width: 100%;
-    margin: 0 0 10px 0
+    margin: 0 0 10px 0;
 }
 
 input, textarea, #editBox {
