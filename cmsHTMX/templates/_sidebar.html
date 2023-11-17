@@ -13,11 +13,23 @@
             {% endif %}
         </span>
     </small></strong>
-    <a href="#" id="closeSidebar" _="on click remove .visible from #sidebar">
+    <a
+        href="#"
+        id="closeSidebar"
+        _="on click remove .visible from #sidebar"
+    >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="left-arrow" class="small icon"><g data-name="Layer 2"><g data-name="arrowhead-left" fill="#134563"><path d="M11.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L7.29 12l4.48-5.37a1 1 0 0 0-.13-1.4z"></path><path d="m14.29 12 4.48-5.37a1 1 0 0 0-1.54-1.28l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63z"></path></g></g></svg>
     </a>
     <form class="frmFrontmatter">
-        <input type="text" name="title" id="txtTitle" placeholder="Title" value="{{ post.title }}">
+        <input type="text" name="title" id="txtTitle" placeholder="Title" value="{{ post.title }}"
+            _=" on input
+                if '{{ post.slug }}' is empty --- i.e. if the post doesn't exist yet
+                    set value of #txtSlug to slugify(my value)
+                    put slugify(my value) + '.jpg' into #slugimage
+                end
+            "
+        >
+        <input type="text" name="slug" id="txtSlug" placeholder="Slug" value="{{ post.slug }}">
         <input type="text" name="date" id="txtDate" placeholder="Date" value="{{ post.date }}">
         <input type="text" name="tags" id="txtTags" placeholder="Tags" value="{{ post.tags }}">
         <input type="text" name="imageClass" id="txtImageClass" placeholder="CSS class for main image" value="{{ post.imageClass }}">
@@ -25,7 +37,7 @@
             <input type="checkbox" id="image" name="image" />
             <label for="image">
                 <small>
-                    Use <a href="{{ imagekit_bucket }}/{{ post.slug }}.jpg" target="_blank">{{ post.slug }}.jpg</a> as main image
+                    Use <a href="{{ imagekit_bucket }}/{{ post.slug }}.jpg" target="_blank" id="slugimage">{{ post.slug }}.jpg</a> as main image
                 </small>
             </label>
         </div>
@@ -97,6 +109,20 @@
 </div>
 
 <script type="text/hyperscript">
+    js
+        function slugify(str) {
+            return String(str)
+            .normalize('NFKD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+        }
+        return { slugify };
+    end
+
     on load from body
         set draft to '{{ post.draft }}'
         set slug to '{{ post.slug }}'
@@ -119,7 +145,6 @@
             remove [@checked] from #image
         end
     end
-
 
     def showAfterRequest(elementId, waitms)
         --- NOTE: The following can also be done like this:

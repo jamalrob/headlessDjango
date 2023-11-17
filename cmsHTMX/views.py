@@ -8,6 +8,8 @@ import markdown
 import frontmatter
 import openai
 from django.contrib.auth.decorators import login_required
+from slugify import slugify
+
 
 bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
 
