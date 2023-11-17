@@ -13,13 +13,18 @@
         <meta property="og:url" content="">
         <meta property="og:image" content="">
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/icon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="icon.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'cmsHTMX/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'cmsHTMX/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'cmsHTMX/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'cmsHTMX/site.webmanifest?v=2.1' %}">
+        <link rel="mask-icon" href="{% static 'cmsHTMX/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link rel="shortcut icon" href="{% static 'cmsHTMX/favicon.ico' %}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
 
-        <script src="{% static 'cmsHTMX/scripts/htmx.min.js' %}"></script>
-        <script src="{% static 'cmsHTMX/scripts/_hyperscript.min.js' %}"></script>
-        <script src="{% static 'cmsHTMX/scripts/showdown.min.js' %}"></script>
+        <script src="{% static 'cmsHTMX/scripts/htmx.min.js' %}" defer></script>
+        <script src="{% static 'cmsHTMX/scripts/_hyperscript.min.js' %}" defer></script>
+        <script src="{% static 'cmsHTMX/scripts/showdown.min.js' %}" defer></script>
     </head>
     <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         {% block body %}{% endblock %}

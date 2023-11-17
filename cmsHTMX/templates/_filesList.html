@@ -1,5 +1,22 @@
 {% for f in files %}
-<li hx-boost="true">
-    <a href="edit/{{ f }}/">{{ f }}</a>
+<li hx-boost="true" class="fileListItem">
+    {{ f }}
+    <span>
+        <button hx-get="edit/{{ f }}/" hx-target="body" hx-push-url="true">Edit</button>
+        <button class="delete">Delete</button>
+    </span>
 </li>
 {% endfor %}
+
+<style>
+    li.fileListItem {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    li.fileListItem button {
+        font-weight: normal;
+        font-size: 0.8rem;
+        padding: 2px 10px;
+    }
+</style>

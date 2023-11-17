@@ -1,11 +1,12 @@
 {% extends "baseHTMX.html" %}
 {% block body %}
 <main>
-    <section class="panel filesList">
-        <h1>Files</h1>
+    <section class="filesList">
+        <h1>Blog posts</h1>
         <p>
-            <h3><a href="new/">Create new</a></h3>
+            <h3><a href="new/" hx-boost="true" hx-indicator="#spinner">Write a new post</a></h3>
         </p>
+        <div id="spinner"></div>
         <ul
             class="listFiles"
             hx-trigger="load"
@@ -13,18 +14,38 @@
             hx-indicator="#spinner"
             >
         </ul>
-        <div id="spinner"></div>
     </section>
 </main>
 
 <style>
+
+    section.filesList {
+        width: 60%;
+        margin: auto;
+        position: relative;
+    }
+
+    section.filesList #spinner {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 83px;
+        right: 3px;
+    }
+
     ul.listFiles {
         width: 100%;
         padding-left: 0;
+        font-size: 1.3rem;
     }
 
     ul.listFiles li {
         list-style-type: none;
+        padding: 5px 10px;
+    }
+
+    ul.listFiles > li:nth-child(odd){
+        background-color: #ebebea;
     }
 </style>
 {% endblock %}

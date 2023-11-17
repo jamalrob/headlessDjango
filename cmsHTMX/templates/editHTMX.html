@@ -5,7 +5,7 @@
     <section class="edit col">
         <form class="form">
 
-            <a href="#" id="hamburger" _="on click add .visible to #sidebar">
+            <a href="#" id="hamburger" _="on click add .visible to #sidebar" title="Edit details, save and publish">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="icon small"><g fill="#134563"><path d="M8.2 13h47.5v6.3H8.2zM8.2 28.8h47.5v6.4H8.2zM8.2 44.7h47.5V51H8.2z"></path></g></svg>
             </a>
             <textarea
@@ -13,6 +13,7 @@
                 name="content"
                 _=" on input put getHtmlFromMarkdown(my value) into #styledContent
                     on scroll go to the top of #styledContent +my scrollTop
+                    on keydown[key is 'Tab'] halt the event then call putTab(me)
                 "
                 >{% autoescape off %}{{ post.md_content }}{% endautoescape %}</textarea>
 
@@ -73,6 +74,15 @@
     def beforeGPTRequest()
         add .visible to .modal-container
         set .modal-inner.innerHTML to ''
+    end
+
+    def putTab(el)
+        el.setRangeText(
+            '\t',
+            el.selectionStart,
+            el.selectionStart,
+            'end'
+        )
     end
 
 </script>
@@ -162,6 +172,13 @@
         height: 85vh;
     }
 
+    textarea,
+    pre, #styledContent {
+        -moz-tab-size : 4;
+          -o-tab-size : 4;
+             tab-size : 4;
+    }
+
     div.underTextarea {
         display: flex;
     }
@@ -189,7 +206,7 @@
     }
 
     section#styledContent {
-        margin-top: 40px !important;
+        margin-top: 20px;
         font-size: 1.06rem;
     }
 
