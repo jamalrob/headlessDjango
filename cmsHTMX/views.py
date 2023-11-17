@@ -13,6 +13,8 @@ bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settin
 
 @login_required
 def cmshtmx_index(request):
+    if 'cmshtmx' not in request.path:
+        return redirect("/cmshtmx/")
     template = loader.get_template("chooseFileHTMX.html")
     context = {}
     return HttpResponse(template.render(context, request))

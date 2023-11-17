@@ -74,7 +74,7 @@ section.panel h1 {
     font-weight: bold;
 }
 
-.loading {
+/*.loading {
     display: none;
     width: 25px;
     height: 25px;
@@ -84,7 +84,7 @@ section.panel h1 {
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
     margin: auto
-}
+}*/
 
 @keyframes spin {
     to { -webkit-transform: rotate(360deg); }
@@ -92,7 +92,6 @@ section.panel h1 {
 @-webkit-keyframes spin {
     to { -webkit-transform: rotate(360deg); }
 }
-
 
 .spinner {
     display: inline-block;
@@ -112,4 +111,22 @@ section.panel h1 {
 button .htmx-request {
     border: 3px solid rgba(140, 195, 212, 0.3);
     border-top-color: #e1dddc;
+}
+
+input[type="checkbox"] {
+    margin-top: 15px;
+}
+
+input[type='text'] {
+    display: block;
+    padding: 10px;
+    width: 100%;
+    margin: 0 0 10px 0
+}
+
+input, textarea {
+    border-radius: 5px;
+    border: 1px solid #eee;
+    font-size: 18px;
+    box-shadow: inset 1px 1px 2px #a9a296;
 }

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "cms",
+    "cmsHTMX",
     "django_htmx",
 ]
 
@@ -132,7 +132,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    "/home/user/websites/headlessDjango/cms/static",
     "/home/user/websites/headlessDjango/cmsHTMX/static",
 ]
 
@@ -167,3 +166,9 @@ HOST = os.environ.get("HOST", default="http://localhost:9500/")
 AI_SECRET_KEY = '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'
 
 LOGIN_URL = "/admin/login/?next=/cmshtmx/"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    }
+}
