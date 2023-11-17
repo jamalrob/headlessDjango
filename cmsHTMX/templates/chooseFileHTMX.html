@@ -6,9 +6,26 @@
         <p>
             <h3><a href="new/">Create new</a></h3>
         </p>
-        <ul class="listFiles" hx-trigger="load" hx-get="{% url 'cmshtmx_files' %}" hx-indicator="#spinner">
+        <ul
+            class="listFiles"
+            hx-trigger="load"
+            hx-get="{% url 'cmshtmx_files' %}"
+            hx-indicator="#spinner"
+            hx-boost="true"
+            >
         </ul>
         <div id="spinner"></div>
     </section>
 </main>
+
+<style>
+    ul.listFiles {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    ul.listFiles li {
+        list-style-type: none;
+    }
+</style>
 {% endblock %}

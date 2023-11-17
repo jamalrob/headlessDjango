@@ -78,12 +78,22 @@ WSGI_APPLICATION = 'headlessDjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'headlessdjango',
+        'USER': 'headless',
+        'PASSWORD': 'beans_hot_drive_dysfunctional_mouse',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
+
+"""
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+"""
 
 
 # Password validation
@@ -155,3 +165,5 @@ IMG_THUMBNAIL = {
 import os
 HOST = os.environ.get("HOST", default="http://localhost:9500/")
 AI_SECRET_KEY = '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'
+
+LOGIN_URL = "/admin/login/?next=/cmshtmx/"

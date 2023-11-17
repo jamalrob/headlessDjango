@@ -28,3 +28,41 @@
         return { copySuggestion };
     end
 </script>
+
+<style>
+    div.modal-inner div.container {
+        width: 50%;
+    }
+
+    div.modal-inner div#originalContainer {
+        margin-right: 25px;
+    }
+
+    div.modal-inner div#answerContainer {
+        margin-left: 25px;
+    }
+
+    div#answerText, div#originalText {
+        overflow: auto;
+        height: 645px;
+        margin-bottom: 5px;
+    }
+
+    a#copy {
+        float: right;
+        position: relative;
+    }
+
+    a#copy::before {
+        content: ''
+    }
+
+    a#copy.showing::before {
+        content: 'Copied!';
+        font-size: 15px;
+        color: green;
+        position: absolute;
+        right: 36px;
+        top: 4px;
+    }
+</style>

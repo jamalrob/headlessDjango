@@ -1,104 +1,18 @@
 {% extends "baseHTMX.html" %}
 {% block body %}
-<div id="sidebar">
-
-    <strong><small>POST STATUS: <span id="poststatus">
-        {% if draft %}
-        Draft
-        {% else %}
-            {% if slug %}
-            Published
-            {% else %}
-            Draft
-            {% endif %}
-        {% endif %}</span></small></strong>
-    <a href="#" id="closeSidebar" _="on click remove .visible from #sidebar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="left-arrow" class="small icon"><g data-name="Layer 2"><g data-name="arrowhead-left" fill="#134563"><path d="M11.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L7.29 12l4.48-5.37a1 1 0 0 0-.13-1.4z"></path><path d="m14.29 12 4.48-5.37a1 1 0 0 0-1.54-1.28l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63z"></path></g></g></svg>
-    </a>
-    <form class="frmFrontmatter">
-        <input type="text" name="title" id="txtTitle" placeholder="Title" value="{{ title }}">
-        <input type="text" name="date" id="txtDate" placeholder="Date" value="{{ date }}">
-        <input type="text" name="tags" id="txtTags" placeholder="Tags" value="{{ tags }}">
-        <input type="text" name="imageClass" id="txtImageClass" placeholder="CSS class for main image" value="{{ imageClass }}">
-        <div>
-            <input type="checkbox" id="image" name="image" />
-            <label for="image">For the main image, use image on ImageKit named after the slug</label>
-        </div>
-
-        <a href="{% url 'cmshtmx_index' %}" id="homeSidebar" title="Home">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="home">
-                <path fill="none" stroke="#134563" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.65721519,18.7714023 L6.65721519,15.70467 C6.65719744,14.9246392 7.29311743,14.2908272 8.08101266,14.2855921 L10.9670886,14.2855921 C11.7587434,14.2855921 12.4005063,14.9209349 12.4005063,15.70467 L12.4005063,15.70467 L12.4005063,18.7809263 C12.4003226,19.4432001 12.9342557,19.984478 13.603038,20 L15.5270886,20 C17.4451246,20 19,18.4606794 19,16.5618312 L19,16.5618312 L19,7.8378351 C18.9897577,7.09082692 18.6354747,6.38934919 18.0379747,5.93303245 L11.4577215,0.685301154 C10.3049347,-0.228433718 8.66620456,-0.228433718 7.51341772,0.685301154 L0.962025316,5.94255646 C0.362258604,6.39702249 0.00738668938,7.09966612 0,7.84735911 L0,16.5618312 C0,18.4606794 1.55487539,20 3.47291139,20 L5.39696203,20 C6.08235439,20 6.63797468,19.4499381 6.63797468,18.7714023 L6.63797468,18.7714023" transform="translate(2.5 2)"></path></svg>
-        </a>
-
-        <div class="buttonrow">
-            <button
-                class="publish savedraft"
-                id="savedraft"
-                hx-post="{% url 'cmshtmx_savedraft' %}"
-                hx-swap="beforeend"
-                hx-indicator="#saveLoading"
-                hx-vals="js:{
-                    content: document.getElementById('editBox').value,
-                    draft: true,
-                    slug: '{{ slug }}'
-                }"
-                hx-select=".status"
-                hx-on::after-request="showAfterRequest('saveAction', 1000)"
-                _="on click hide #saveAction"
-                >
-                <span id="saveAction">Save draft</span>
-                <span class="spinner" id="saveLoading"></span>
-            </button>
-
-            <button
-                class="publish unpublish"
-                id="unpublish"
-                hx-post="{% url 'cmshtmx_unpublish' %}"
-                hx-swap="beforeend"
-                hx-indicator="#unpublishLoading"
-                hx-vals="js:{
-                    content: document.getElementById('editBox').value,
-                    draft: true,
-                    slug: '{{ slug }}'
-                }"
-                hx-select=".status"
-                hx-on::after-request="showAfterRequest('unpublishAction', 1000)"
-                _="on click hide #unpublishAction"
-                >
-                <span id="unpublishAction">Unpublish</span>
-                <span class="spinner" id="unpublishLoading"></span>
-            </button>
-
-            <button
-                class="publish"
-                id="publish"
-                hx-post="{% url 'cmshtmx_publish' %}"
-                hx-swap="beforeend"
-                hx-indicator="#publishLoading"
-                hx-vals="js:{
-                    content: document.getElementById('editBox').value,
-                    slug: '{{ slug }}'
-                }"
-                hx-select=".status"
-                hx-on::after-request="showAfterRequest('publishAction', 1000)"
-                _="on click hide #publishAction"
-                >
-                <span id="publishAction">Publish</span>
-                <span class="spinner" id="publishLoading"></span>
-            </button>
-        </div>
-
-    </form>
-</div>
+{% include "_sidebar.html" with post=post %}
 <main>
     <section class="edit col">
         <form class="form">
 
             <a href="#" id="hamburger" _="on click add .visible to #sidebar">
-                <!-- hamburger icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="icon small"><g fill="#134563"><path d="M8.2 13h47.5v6.3H8.2zM8.2 28.8h47.5v6.4H8.2zM8.2 44.7h47.5V51H8.2z"></path></g></svg>
             </a>
-            <textarea id="editBox" name="content">{% autoescape off %}{{ md_content }}{% endautoescape %}</textarea>
+            <textarea
+                id="editBox"
+                name="content"
+                _="on input put getHtmlFromMarkdown(my.value) into .styledContent"
+                >{% autoescape off %}{{ post.md_content }}{% endautoescape %}</textarea>
 
             <div class="box underTextarea">
                 <div class="col">
@@ -110,7 +24,9 @@
                 <div class="col">
                     <button class="getAnswer" id="getAnswer"
                             hx-post="{% url 'cmshtmx_get_suggestion' %}"
-                            hx-vals="js:{content_to_fix: getSelectedText('editBox')}"
+                            hx-vals="js:{
+                                content_to_fix: getSelectedText('editBox')
+                            }"
                             hx-target=".modal-inner"
                             hx-indicator="#answerLoading"
                             hx-on::before-request="beforeGPTRequest()"
@@ -124,7 +40,7 @@
         </form>
     </section>
     <section class="styledContent col">
-        {% autoescape off %}{{ html }}{% endautoescape %}
+        {% autoescape off %}{{ post.html }}{% endautoescape %}
     </section>
 </main>
 
@@ -137,13 +53,10 @@
 </div>
 
 <script type="text/hyperscript">
-    on keyup from #editBox
-        js
-            var converter = new showdown.Converter(),
-            text      = document.getElementById('editBox').value,
-            html      = converter.makeHtml(text.replaceAll('/bucket/', '{{ imagekit_bucket }}/'));
-            document.querySelector(".styledContent").innerHTML = html;
-        end
+
+    def getHtmlFromMarkdown(md_text)
+        make a showdown.Converter called converter
+        return converter.makeHtml(md_text.replaceAll('/bucket/', '{{ imagekit_bucket }}/'))
     end
 
     on keyup[key is 'Escape']
@@ -151,56 +64,8 @@
         remove .visible from #sidebar
     end
 
-    js
-        function getSelectedText(idoftextarea){
-            var textArea = document.getElementById(idoftextarea);
-            var text = textArea.value;
-            var indexStart = textArea.selectionStart;
-            var indexEnd = textArea.selectionEnd;
-            return text.substring(indexStart, indexEnd);
-        }
-
-        return { getSelectedText };
-    end
-
-    on load from body
-        set draft to '{{ draft }}'
-        set slug to '{{ slug }}'
-        set image to '{{ image }}'
-        if draft is 'False' or draft is empty or draft is 'false'
-            if slug is not empty
-                hide #savedraft
-                show #unpublish
-            end
-        else
-            show #savedraft
-            hide #unpublish
-        end
-
-        if image is 'True' or image is 'true' or image is true
-            add [@checked] to #image
-    end
-
-
-    def showAfterRequest(elementId, waitms)
-        --- NOTE: The following can also be done like this:
-        --- wait waitms then hide .status then show #{elementId}
-        wait waitms
-        hide .status
-        show #{elementId}
-        if elementId is "unpublishAction"
-            --- remove [@disabled] from #savedraft
-            show #savedraft
-            hide #unpublish
-            set #poststatus.innerHTML to 'Draft'
-        else
-            if elementId is "publishAction"
-                --- remove [@disabled] from #savedraft
-                hide #savedraft
-                show #unpublish
-                set #poststatus.innerHTML to 'Published'
-            end
-        end
+    def getSelectedText(idoftextarea)
+        return #{idoftextarea}.value.substring(#{idoftextarea}.selectionStart, #{idoftextarea}.selectionEnd)
     end
 
     def beforeGPTRequest()
@@ -209,4 +74,156 @@
     end
 
 </script>
+
+<style>
+    .modal-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #433;
+        background-color:rgba(0,0,0,0.5);
+        display: none;
+    }
+
+    .modal-container.visible {
+        display: block !important;
+    }
+
+    .modal {
+        margin: 4rem auto;
+        width: 80vw;
+        min-width: 1000px;
+        height: 800px;
+        background: #fffdf8;
+        z-index: 1000;
+        border-radius: 6px;
+        padding: 35px;
+    }
+
+    .modal .htmx-request {
+        width: 60px;
+        height: 60px;
+        margin-top: 100px;
+    }
+
+    .modal h3 {
+        margin-top: 0;
+    }
+
+    div.modal-inner {
+        display: flex;
+    }
+
+    div.buttonrow {
+        position: absolute;
+        right: 24px;
+        bottom: 40px;
+    }
+
+    button#getAnswer {
+        background-color: #18897e;
+        padding-bottom: 17px;
+        width: 320px;
+        margin-top: 10px;
+    }
+
+    button#getAnswer:hover {
+        background-color: #15b4a4;
+        padding-bottom: 17px;
+    }
+
+    button#getAnswer svg {
+        width: 30px;
+        vertical-align: bottom;
+        margin-bottom: -4px;
+        margin-left: -8px;
+    }
+
+    .form {
+        position: fixed;
+        left: 20px;
+        top: 12px;
+        width: 48%;
+    }
+
+    svg.icon.small {
+        width: 1.4rem;
+    }
+
+    input, textarea {
+        border-radius: 5px;
+        border: 1px solid #eee;
+        font-size: 18px;
+        box-shadow: inset 1px 1px 2px #a9a296;
+    }
+
+    input[type='text'] {
+        display: block;
+        padding: 10px;
+        width: 100%;
+        margin: 0 0 10px 0
+    }
+
+    label.text {
+        margin: 5px 0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    input[type="checkbox"] {
+        margin-top: 15px;
+    }
+
+    textarea {
+        padding: 10px;
+        max-width: 100%;
+        line-height: 1.5;
+        width: 100%;
+        height: 85vh;
+    }
+
+    section.styledContent img {
+        max-width: 100%;
+    }
+
+    img[title="imgSmall"] {
+        width: 80%;
+    }
+
+    blockquote {
+        color: #4e4e4e;
+        background: rgb(247, 240, 230);
+        margin: 0 2rem 0 0;
+        padding: 0.3rem 2.2rem 0.3rem;
+        border-left: solid 6px rgb(203, 194, 184);
+    }
+
+    div.underTextarea {
+        display: flex;
+    }
+
+    div.underTextarea .col {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 0 0 0 5px;
+        width: 50%;
+    }
+
+    div.underTextarea ol {
+        margin: 5px 0 0 0;
+        font-size: 15px;
+        padding: 3px 0 0 15px;
+    }
+
+    div.underTextarea ol li {
+        line-height: 1.3;
+    }
+
+    button#getAnswer {
+        align-self: flex-end;
+    }
+</style>
 {% endblock %}

@@ -17,8 +17,8 @@ bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settin
 
 def topindex(request):
     if request.user.is_authenticated:
-        return redirect("/cms/")
-    return redirect("/admin/login/?next=/cms/")
+        return redirect("/cmshtmx/")
+    return redirect("/admin/login/?next=/cmshtmx/")
 
 def index(request):
     if request.user.is_authenticated:
