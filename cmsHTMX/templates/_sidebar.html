@@ -131,7 +131,7 @@
         return { slugify };
     end
 
-    on load from body
+    on load from #sidebar
         set draft to '{{ post.draft }}'
         set slug to '{{ post.slug }}'
         set image to '{{ post.image }}'
