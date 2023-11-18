@@ -1,16 +1,15 @@
 from pathlib import Path
 import os
-import sys
-import dj_database_url
-from django.core.management.utils import get_random_secret_key
+from environs import Env
 
+env = Env()
+env.read_env()
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
-BASE_DIR = Path(__file__).resolve().parent.parent
-DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-ALLOWED_HOSTS=['*']
+DEBUG = env.bool("DEBUG")
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
 #DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Application definition
 
@@ -66,29 +65,14 @@ WSGI_APPLICATION = 'headlessDjango.wsgi.application'
 
 # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-DGTOKEN='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'
-AI_SECRET_KEY='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'
-DB_NAME='headlessdjango'
-DB_USER='headless'
-DB_PASSWORD='beans_hot_drive_dysfunctional_mouse'
-DB_HOST='127.0.0.1'
-DB_PORT='5432'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #'NAME': os.getenv('DB_NAME'),
-        #'USER': os.getenv('DB_USER'),
-        #'PASSWORD': os.getenv('DB_PASSWORD'),
-        #'HOST': os.getenv('DB_HOST'),
-        #'PORT': os.getenv('DB_PORT'),
-
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
     }
 }
 
@@ -154,8 +138,8 @@ IMG_THUMBNAIL = {
 
 LOGIN_URL = "/admin/login/?next=/cmshtmx/"
 
-#DGTOKEN = os.getenv('DGTOKEN')
 BLOG_REPO = 'blog.alistairrobinson.me'
 CONTENT_FOLDER = 'content'
 IMG_BUCKET = 'https://ik.imagekit.io/alistairrobinson/blog'
-#AI_SECRET_KEY = os.getenv('AI_SECRET_KEY')
+AI_SECRET_KEY = env('AI_SECRET_KEY')
+DGTOKEN = env('DGTOKEN')
