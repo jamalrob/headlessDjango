@@ -28,8 +28,18 @@ def get_files(request):
     files = getFilesinContentFolder()
 
     # To get more data into the list, but it's too slow:
-    #files = list(map(lambda x: { "slug": x.path.replace('content/', '').replace('.mdx', ''), "title": frontmatter.loads(x.decoded_content.decode()).get("title") }, files))
-
+    """
+    files = list(
+            map(
+                lambda x:
+                    {
+                        "slug": x.path.replace('content/', '').replace('.mdx', ''),
+                        "title": frontmatter.loads(x.decoded_content.decode()).get("title")
+                    },
+                files
+                )
+            )
+    """
     files = list(map(lambda x: x.path.replace('content/', '').replace('.mdx', ''), files))
     context = {
         'files': files

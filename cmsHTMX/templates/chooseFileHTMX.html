@@ -4,7 +4,10 @@
     <section class="filesList">
         <h1>Blog posts</h1>
         <div class="buttonRow">
-            <input type="search" id="searchPosts" placeholder="Search" />
+            <input
+                type="search" id="searchPosts" placeholder="Search"
+                _="on keyup call searchLocally(my value)"
+            />
             <button
                 id="newPost"
                 hx-get="new/"
@@ -31,10 +34,19 @@
     def fadeInPosts()
         transition .listFiles opacity to 1 over 0.15s
     end
+
+    def searchLocally(sTerm)
+        repeat for fli in <li.fileListItem/>
+            set thisResult to innerText as a String of <span.slug/> in fli
+            if thisResult.indexOf(sTerm) > -1
+                show fli
+            else
+                hide fli
+        end
+    end
 </script>
 
 <style>
-
     section.filesList {
         width: 60%;
         margin: auto;
