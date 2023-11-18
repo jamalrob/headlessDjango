@@ -49,6 +49,10 @@ def getFilesinContentFolder():
     repo = getRepo()
     return repo.get_contents(settings.CONTENT_FOLDER)
 
+def getFileContent(filePath):
+    repo = getRepo()
+    return repo.get_contents(filePath)
+
 def updateMarkdownFile(slug, fm, content):
     filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
     full_content = fm + content

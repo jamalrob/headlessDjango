@@ -1,14 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
-from cmsHTMX.data_lib import updateOrCreate, build_content, getFilesinContentFolder, getRepo
+import cmsHTMX.data_lib as post_data
 from django.conf import settings
 import markdown
 import frontmatter
 import openai
 from django.contrib.auth.decorators import login_required
-from slugify import slugify
 
 
 bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
@@ -24,22 +22,7 @@ def cmshtmx_index(request):
 
 @login_required
 def get_files(request):
-    repo = getRepo()
-    files = getFilesinContentFolder()
-
-    # To get more data into the list, but it's too slow:
-    """
-    files = list(
-            map(
-                lambda x:
-                    {
-                        "slug": x.path.replace('content/', '').replace('.mdx', ''),
-                        "title": frontmatter.loads(x.decoded_content.decode()).get("title")
-                    },
-                files
-                )
-            )
-    """
+    files = post_data.getFilesinContentFolder()
     files = list(map(lambda x: x.path.replace('content/', '').replace('.mdx', ''), files))
     context = {
         'files': files
@@ -50,14 +33,12 @@ def get_files(request):
 
 @login_required
 def get_post(request, slug=''):
-    repo = getRepo()
     data = {}
     md_as_html = ''
     md_content = ''
     if slug:
         filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
-        file_content = repo.get_contents(filePath)
-        txt = file_content.decoded_content.decode()
+        txt = post_data.getFileContent(filePath).decoded_content.decode()
         data = frontmatter.loads(txt)
         md = markdown.Markdown()
         md_as_html = md.convert(data.content.replace('/bucket', bucket_url))
@@ -140,8 +121,8 @@ def get_suggestion(request):
 @login_required
 def publish(request):
     slug = request.POST.get('slug', '')
-    post = build_content(request, draft=False)
-    return HttpResponse(updateOrCreate(post, slug))
+    post = post_data.build_content(request, draft=False)
+    return HttpResponse(post_data.updateOrCreate(post, slug))
 
 
 @login_required
@@ -150,5 +131,5 @@ def save_draft(request):
         since all it does it build the content and frontmatter with draft=True
     """
     slug = request.POST.get('slug', '')
-    post = build_content(request, draft=True)
-    return HttpResponse(updateOrCreate(post, slug))
+    post = post_data.build_content(request, draft=True)
+    return HttpResponse(post_data.updateOrCreate(post, slug))
