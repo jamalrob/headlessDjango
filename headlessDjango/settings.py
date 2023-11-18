@@ -9,7 +9,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+ALLOWED_HOSTS=['*']
+#DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 # Application definition
 
@@ -64,6 +65,14 @@ WSGI_APPLICATION = 'headlessDjango.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+DGTOKEN='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'
+AI_SECRET_KEY='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'
+DB_NAME='headlessdjango'
+DB_USER='headless'
+DB_PASSWORD='beans_hot_drive_dysfunctional_mouse'
+DB_HOST='127.0.0.1'
+DB_PORT='5432'
 
 DATABASES = {
     'default': {
@@ -138,8 +147,8 @@ IMG_THUMBNAIL = {
 
 LOGIN_URL = "/admin/login/?next=/cmshtmx/"
 
-DGTOKEN = os.getenv('DGTOKEN')
+#DGTOKEN = os.getenv('DGTOKEN')
 BLOG_REPO = 'blog.alistairrobinson.me'
 CONTENT_FOLDER = 'content'
 IMG_BUCKET = 'https://ik.imagekit.io/alistairrobinson/blog'
-AI_SECRET_KEY = os.getenv('AI_SECRET_KEY')
+#AI_SECRET_KEY = os.getenv('AI_SECRET_KEY')
