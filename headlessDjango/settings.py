@@ -65,34 +65,16 @@ WSGI_APPLICATION = 'headlessDjango.wsgi.application'
 
 # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-if DEVELOPMENT_MODE is True:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
-    DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-    }
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': os.getenv('DB_NAME'),
-#        'USER': os.getenv('DB_USER'),
-#        'PASSWORD': os.getenv('DB_PASSWORD'),
-#        'HOST': os.getenv('DB_HOST'),
-#        'PORT': os.getenv('DB_PORT'),
-#    }
-#}
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -157,7 +139,7 @@ IMG_THUMBNAIL = {
 LOGIN_URL = "/admin/login/?next=/cmshtmx/"
 
 DGTOKEN = os.getenv('DGTOKEN')
-BLOG_REPO = os.getenv('BLOG_REPO')
-CONTENT_FOLDER = os.getenv('CONTENT_FOLDER')
-IMG_BUCKET = os.getenv('IMG_BUCKET')
+BLOG_REPO = 'blog.alistairrobinson.me'
+CONTENT_FOLDER = 'content'
+IMG_BUCKET = 'https://ik.imagekit.io/alistairrobinson/blog'
 AI_SECRET_KEY = os.getenv('AI_SECRET_KEY')

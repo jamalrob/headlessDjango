@@ -3,14 +3,13 @@ from django.template import loader
 from django.shortcuts import redirect
 import cmsHTMX.content_lib_github as post_data
 from django.conf import settings
-import os
 import markdown
 import frontmatter
 import openai
 from django.contrib.auth.decorators import login_required
 
 
-bucket_url = f'{os.getenv("IMG_BUCKET")}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
+bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
 
 @login_required
 def cmshtmx_index(request):
@@ -38,7 +37,7 @@ def get_post(request, slug=''):
     md_as_html = ''
     md_content = ''
     if slug:
-        filePath = f'{os.getenv("CONTENT_FOLDER")}/{slug}.mdx'
+        filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
         txt = post_data.getFileContent(filePath).decoded_content.decode()
         data = frontmatter.loads(txt)
         md = markdown.Markdown()
@@ -73,14 +72,14 @@ def get_post(request, slug=''):
 
     context = {
         "post": post,
-        "imagekit_bucket": os.getenv("IMG_BUCKET"),
+        "imagekit_bucket": settings.IMG_BUCKET,
     }
     template = loader.get_template("editHTMX.html")
     return HttpResponse(template.render(context, request))
 
 @login_required
 def get_suggestion(request):
-    openai.api_key = os.getenv("AI_SECRET_KEY")
+    openai.api_key = settings.AI_SECRET_KEY
 
     content_to_fix = request.POST.get('content_to_fix')
     setup = """ You are a blog writer's personal editor, and
