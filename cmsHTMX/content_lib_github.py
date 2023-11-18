@@ -1,6 +1,6 @@
 from github import Github, Auth
-from django.conf import settings
 from slugify import slugify
+import os
 
 def build_content(request, draft):
 
@@ -40,28 +40,28 @@ def updateOrCreate(post, slug):
     return result
 
 def getRepo():
-    auth = Auth.Token(settings.DGTOKEN)
+    auth = Auth.Token(os.getenv("DGTOKEN"))
     g = Github(auth=auth)
     user = g.get_user()
-    return user.get_repo(settings.BLOG_REPO)
+    return user.get_repo(os.getenv("BLOG_REPO"))
 
 def getFilesinContentFolder():
     repo = getRepo()
-    return repo.get_contents(settings.CONTENT_FOLDER)
+    return repo.get_contents(os.getenv("CONTENT_FOLDER"))
 
 def getFileContent(filePath):
     repo = getRepo()
     return repo.get_contents(filePath)
 
 def updateMarkdownFile(slug, fm, content):
-    filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
+    filePath = f'{os.getenv("CONTENT_FOLDER")}/{slug}.mdx'
     full_content = fm + content
     repo = getRepo()
     fc = repo.get_contents(filePath)
     return repo.update_file(filePath, "Edit blog post content", full_content, fc.sha)
 
 def createMarkdownFile(slug, fm, content):
-    filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
+    filePath = f'{os.getenv("CONTENT_FOLDER")}/{slug}.mdx'
     full_content = fm + content
     repo = getRepo()
     return repo.create_file(filePath, "New blog post", full_content)
