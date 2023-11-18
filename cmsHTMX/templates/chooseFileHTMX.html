@@ -38,7 +38,7 @@
     def searchLocally(sTerm)
         repeat for fli in <li.fileListItem/>
             set thisResult to innerText as a String of <span.slug/> in fli
-            if thisResult.indexOf(sTerm) > -1
+            if thisResult.indexOf(sTerm.toLowerCase()) > -1
                 show fli
             else
                 hide fli

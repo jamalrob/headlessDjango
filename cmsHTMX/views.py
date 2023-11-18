@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
-import cmsHTMX.data_lib as post_data
+import cmsHTMX.content_lib_github as post_data
 from django.conf import settings
 import markdown
 import frontmatter
