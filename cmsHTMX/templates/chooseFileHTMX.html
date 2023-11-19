@@ -37,14 +37,10 @@
 
     def searchLocally(sTerm)
         repeat for fli in <li.fileListItem/>
-            set thisResult to innerText as a String of <span.slug/> in fli
-            if thisResult.indexOf(sTerm.toLowerCase()) > -1
+            if innerText as String of <span.slug/> in fli contains sTerm.toLowerCase()
                 show fli
             else
                 hide fli
-            end
-        end
-    end
 </script>
 
 <style>
