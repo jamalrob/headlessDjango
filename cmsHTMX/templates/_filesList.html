@@ -1,7 +1,7 @@
 {% for f in files %}
 <li hx-boost="true" class="fileListItem showing">
     <span class="slug">{{ f }}</span>
-    <span>
+    <span class="buttonContainer">
         <button hx-get="edit/{{ f }}/" hx-target="body" hx-push-url="true">Edit</button>
         <button class="delete">Delete</button>
     </span>
@@ -14,8 +14,11 @@
         justify-content: space-between;
     }
 
+    li.fileListItem span.buttonContainer {
+        font-size: 1.23rem;
+    }
+
     li.fileListItem button {
         font-weight: normal;
-        font-size: 0.8rem;
     }
 </style>
