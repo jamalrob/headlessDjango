@@ -5,6 +5,7 @@
         <h1>Blog posts</h1>
         <div class="buttonRow">
             <input
+                id="txtSearch"
                 type="search" id="searchPosts" placeholder="Search by slug"
                 _="on keyup call searchLocally(my value)"
             />
@@ -24,7 +25,7 @@
             hx-trigger="load"
             hx-get="{% url 'cmshtmx_files' %}"
             hx-indicator="#spinner"
-            hx-on::after-request="fadeInPosts()"
+            hx-on::after-request="fadeInPosts();document.getElementById('txtSearch').focus();"
             >
         </ul>
     </section>
@@ -56,8 +57,12 @@
 </script>
 
 <style>
+    #txtSearch {
+        padding-left: 10px;
+    }
+
     .oddrow {
-        background-color: #ebebea;
+        background-color: #f3f2f2;
     }
 
     section.filesList {
@@ -79,17 +84,15 @@
         padding-left: 0;
         font-size: 1.3rem;
         opacity: 0;
-        background: white;
+        padding: 3px;
+        border-radius: 5px;
+        background: #ddd;
     }
 
     ul.listFiles li {
         list-style-type: none;
         padding: 5px 10px;
     }
-
-    /*ul.listFiles > li:nth-child(odd){
-        background-color: #ebebea;
-    }*/
 
     .showing {
         display: flex !important;
