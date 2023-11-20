@@ -32,18 +32,34 @@
 
 <script type="text/hyperscript">
     def fadeInPosts()
+        call colourTheRows()
         transition .listFiles opacity to 1 over 0.15s
     end
 
     def searchLocally(sTerm)
-        repeat for fli in <li.fileListItem/>
-            if innerText as String of <span.slug/> in fli contains sTerm.toLowerCase()
-                show fli
+        repeat for fli in <li.fileListItem />
+            if innerText as String of <span.slug /> in it contains sTerm.toLowerCase()
+                show it then add .showing to it
             else
-                hide fli
+                hide it then remove .showing from it
+            end
+        end
+        colourTheRows()
+    end
+
+    def colourTheRows()
+        repeat for fli in <li.showing /> index i
+            if i mod 2 == 0
+                add .oddrow to fli
+            else
+                remove .oddrow from it
 </script>
 
 <style>
+    .oddrow {
+        background-color: #ebebea;
+    }
+
     section.filesList {
         width: 60%;
         margin: auto;
@@ -63,6 +79,7 @@
         padding-left: 0;
         font-size: 1.3rem;
         opacity: 0;
+        background: white;
     }
 
     ul.listFiles li {
@@ -70,8 +87,12 @@
         padding: 5px 10px;
     }
 
-    ul.listFiles > li:nth-child(odd){
+    /*ul.listFiles > li:nth-child(odd){
         background-color: #ebebea;
+    }*/
+
+    .showing {
+        display: flex !important;
     }
 
     section.filesList .buttonRow {

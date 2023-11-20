@@ -1,5 +1,5 @@
 {% for f in files %}
-<li hx-boost="true" class="fileListItem">
+<li hx-boost="true" class="fileListItem showing">
     <span class="slug">{{ f }}</span>
     <span>
         <button hx-get="edit/{{ f }}/" hx-target="body" hx-push-url="true">Edit</button>
