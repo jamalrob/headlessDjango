@@ -1,15 +1,17 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
-import cmsHTMX.content_lib_github as post_data
+from cmsHTMX.document_store import DocumentStore
 from django.conf import settings
 import markdown
 import frontmatter
 import openai
 from django.contrib.auth.decorators import login_required
 
-
-bucket_url = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
+BUCKET_URL = f'{settings.IMG_BUCKET}/tr:w-{settings.IMG_BODY["width"]},q-{settings.IMG_BODY["quality"]}'
+CONTENT_FOLDER = settings.CONTENT_FOLDER
+DGTOKEN = settings.DGTOKEN
+REPO_NAME = settings.BLOG_REPO
 
 @login_required
 def cmshtmx_index(request):
@@ -22,7 +24,8 @@ def cmshtmx_index(request):
 
 @login_required
 def get_files(request):
-    files = post_data.getFilesinContentFolder()
+    ds = DocumentStore(CONTENT_FOLDER, DGTOKEN, REPO_NAME)
+    files = ds.getFilesinContentFolder()
     files = list(map(lambda x: x.path.replace('content/', '').replace('.mdx', ''), files))
     context = {
         'files': files
@@ -36,12 +39,13 @@ def get_post(request, slug=''):
     data = {}
     md_as_html = ''
     md_content = ''
+    ds = DocumentStore(CONTENT_FOLDER, DGTOKEN, REPO_NAME)
     if slug:
         filePath = f'{settings.CONTENT_FOLDER}/{slug}.mdx'
-        txt = post_data.getFileContent(filePath).decoded_content.decode()
+        txt = ds.getFileContent(filePath).decoded_content.decode()
         data = frontmatter.loads(txt)
         md = markdown.Markdown()
-        md_as_html = md.convert(data.content.replace('/bucket', bucket_url))
+        md_as_html = md.convert(data.content.replace('/bucket', BUCKET_URL))
         md_content = data.content
 
     title = data.get("title") or ''
@@ -120,8 +124,9 @@ def get_suggestion(request):
 @login_required
 def publish(request):
     slug = request.POST.get('slug', '')
-    post = post_data.build_content(request, draft=False)
-    return HttpResponse(post_data.updateOrCreate(post, slug))
+    ds = DocumentStore(CONTENT_FOLDER, DGTOKEN, REPO_NAME)
+    post = ds.build_content(request, draft=False)
+    return HttpResponse(ds.updateOrCreate(post, slug))
 
 
 @login_required
@@ -130,5 +135,6 @@ def save_draft(request):
         since all it does it build the content and frontmatter with draft=True
     """
     slug = request.POST.get('slug', '')
-    post = post_data.build_content(request, draft=True)
-    return HttpResponse(post_data.updateOrCreate(post, slug))
+    ds = DocumentStore(CONTENT_FOLDER, DGTOKEN, REPO_NAME)
+    post = ds.build_content(request, draft=True)
+    return HttpResponse(ds.updateOrCreate(post, slug))
