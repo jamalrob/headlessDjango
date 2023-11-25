@@ -14,5 +14,6 @@ The project achieves the following:
     - Effectively:
         - DRY, separation of concerns, and modularization in Django
         - But locality of behaviour, with inline code and styles, on the front-end
+    - NOTE: CSP security is against this pattern, so in (public) production HTMX should be used with `htmx.config.selfRequestsOnly` and nonces and hashes have to be added to scipt and style tags.
 
 Separately, there is a Github webhook implemented with a Flask endpoint separate from the CMS itself. It pulls the code and restarts the application when code is pushed to this repository. See https://github.com/jamalrob/ghook.
